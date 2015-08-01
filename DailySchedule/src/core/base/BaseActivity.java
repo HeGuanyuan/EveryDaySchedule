@@ -22,7 +22,6 @@ public class BaseActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		initView();
 
 		if (savedInstanceState != null) {
 			String FRAGMENTS_TAG = "android:support:fragments";
