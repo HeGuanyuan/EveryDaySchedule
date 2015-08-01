@@ -42,5 +42,13 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .metadata/*
-EveryDaySchedule/bin/*
-EveryDaySchedule/gen/*
+DailySchedule/bin/*
+DailySchedule/gen/*
+CXB/*
+base_library_pullToRefresh_chenyoca/*
+CropImage/*
+OneKeyShare/*
+ShareSDK/*
+SMSSDK/*
+
+*.png

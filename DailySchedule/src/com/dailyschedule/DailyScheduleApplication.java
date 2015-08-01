@@ -1,11 +1,9 @@
-package com.guanyuan.everydayschedule;
-
+package com.dailyschedule;
 import java.util.Stack;
-
 import android.app.Activity;
 import android.app.Application;
 
-public class EveryDayScheduleApplication extends Application {
+public class DailyScheduleApplication extends Application {
 
 	private Stack<Activity> activities;
 
@@ -13,6 +11,7 @@ public class EveryDayScheduleApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		activities = new Stack<Activity>();
 		initApplication();
 	}
 

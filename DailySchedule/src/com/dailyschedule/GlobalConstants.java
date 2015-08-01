@@ -1,4 +1,4 @@
-package com.guanyuan.everydayschedule;
+package com.dailyschedule;
 
 public class GlobalConstants {
 
