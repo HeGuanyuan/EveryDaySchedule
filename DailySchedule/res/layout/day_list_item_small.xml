@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_small_height"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/day_of_mongth_tv_s"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:text="26" />
+
+    <LinearLayout
+        android:id="@+id/things_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/day_of_mongth_tv_s"
+        android:orientation="horizontal" >
+
+        <include layout="@layout/thing_item_small" />
+
+        <include layout="@layout/thing_item_small" />
+
+        <include layout="@layout/thing_item_small" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ranks"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"
+            android:textAlignment="viewEnd" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"
+            android:textAlignment="viewEnd" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"
+            android:textAlignment="viewEnd" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/horizontal_line_ico" />
+
+</RelativeLayout>

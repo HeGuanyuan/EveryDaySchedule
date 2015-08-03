@@ -14,7 +14,8 @@ public class MyDailyFragment extends BaseFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.daily_layout, null);
+		View view = inflater.inflate(R.layout.day_list_item_large, null);
+		System.out.println("cv");
 		return view;
 	}
 	@Override
