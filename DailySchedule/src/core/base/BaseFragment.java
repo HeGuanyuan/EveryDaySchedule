@@ -1,8 +1,5 @@
 package core.base;
 
-import com.dailyschedule.R;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dailyschedule.R;
 
 /**
  * @Class BaseFragment 基础Fragment
@@ -51,11 +50,16 @@ public class BaseFragment extends Fragment implements OnClickListener {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		initView();
+		initTitleBar();
 		setListener();
 	}
 
-	private void initView() {
+	/**
+	 *@Functiuon 初始化 标题栏
+	 *@Author Heguanyuan 2015-8-4 上午11:27:01
+	 */
+	protected void initTitleBar() {
+		System.out.println("base---> runned");
 		View view = getView();
 		titleBarLayout = (RelativeLayout) view.findViewById(R.id.title_bar_layout);
 		leftBtn = (TextView) view.findViewById(R.id.left_btn_txt);

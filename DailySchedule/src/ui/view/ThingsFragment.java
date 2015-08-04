@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import core.base.BaseFragment;
 
-public class ThingsFragment extends BaseFragment{
-	
+public class ThingsFragment extends BaseFragment {
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -17,11 +17,16 @@ public class ThingsFragment extends BaseFragment{
 		View view = inflater.inflate(R.layout.things_fragment_layout, null);
 		return view;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
 
+	@Override
+	protected void initTitleBar() {
+		// 没有titlebar
+		// super.initBaseView();
+	}
 }

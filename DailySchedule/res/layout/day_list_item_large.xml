@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -73,6 +73,13 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/thing_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+<!-- 
             <include layout="@layout/day_sub_list_item" />
 
             <include layout="@layout/day_sub_list_item" />
@@ -80,6 +87,7 @@
             <include layout="@layout/day_sub_list_item" />
 
             <include layout="@layout/day_sub_list_item" />
+ -->
         </LinearLayout>
     </RelativeLayout>
 

@@ -25,7 +25,7 @@ public class BaseActivity extends FragmentActivity {
 
 		if (savedInstanceState != null) {
 			String FRAGMENTS_TAG = "android:support:fragments";
-			// removeµô±£´æµÄFragment
+			// removeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Fragment
 			savedInstanceState.remove(FRAGMENTS_TAG);
 		}
 		this.setContentView(R.layout.main_activity_layout);
@@ -35,16 +35,16 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	/**
-	 * @Functiuon ³õÊ¼»¯½çÃæ
-	 * @Authore Heguanyuan 2015-8-1 ÏÂÎç1:30:40
+	 * @Functiuon åˆå§‹åŒ–UI
+	 * @Authore Heguanyuan 2015-8-1 ä¸‹åˆ1:30:40
 	 */
 	private void initView() {
 		
 	}
 
 	/**
-	 * @Functiuon ÇĞ»»Fragment
-	 * @Authore Heguanyuan 2015-8-1 ÏÂÎç3:49:53
+	 * @Functiuon åˆ‡æ¢Fragment
+	 * @Authore Heguanyuan 2015-8-1 ä¸‹åˆ3:49:53
 	 */
 	public void switchContent(Fragment f) {
 		getSupportFragmentManager().beginTransaction().addToBackStack(null);

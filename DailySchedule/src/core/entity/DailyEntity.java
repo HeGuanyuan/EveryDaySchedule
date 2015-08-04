@@ -8,8 +8,19 @@ public class DailyEntity {
 	private String timeStamp;
 	private String evaluation;
 	private String id;
-	
+	private boolean isExpanded;
+
+	public DailyEntity() {
+		thingList = new ArrayList<ThingEntity>();
+		timeStamp = "";
+		evaluation = "";
+		id = "";
+		isExpanded = false;
+	}
+
 	public ArrayList<ThingEntity> getThingList() {
+		if (thingList == null)
+			thingList = new ArrayList<ThingEntity>();
 		return thingList;
 	}
 
@@ -39,6 +50,14 @@ public class DailyEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public boolean isExpanded() {
+		return isExpanded;
+	}
+
+	public void setExpanded(boolean isExpanded) {
+		this.isExpanded = isExpanded;
 	}
 
 }

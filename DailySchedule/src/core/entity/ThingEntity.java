@@ -1,5 +1,6 @@
 package core.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,9 +13,16 @@ public class ThingEntity {
 	private String color;
 	private String id;
 	private List<String> remarks;
-	/**是否展开flag*/
+	/**是否展开*/
 	private boolean isExpanded;
 
+	public ThingEntity() {
+		name = "";
+		color = "";
+		id = "";
+		remarks = new ArrayList<String>();
+	}
+	
 	public String getName() {
 		return name;
 	}
