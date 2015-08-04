@@ -1,6 +1,6 @@
 package com.dailyschedule;
 
-import ui.view.MyDailyFragment;
+import ui.view.HomeFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import core.base.BaseActivity;
@@ -15,7 +15,7 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void initView() {
-		Fragment f = new MyDailyFragment();
+		Fragment f = new HomeFragment();
 		switchContent(f);
 
 	}

@@ -6,29 +6,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import core.base.BaseFragment;
 
-/**
- * @Class MyDailyFragment 以列表陈列每天的事件
- * @Author He Guanyuan 2015-8-4 上午9:09:01
- */
-public class MyDailyFragment extends BaseFragment{
-
-	private ListView dailyList;
+public class ThingsFragment extends BaseFragment{
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.daily_layout, null);
+		View view = inflater.inflate(R.layout.things_fragment_layout, null);
 		return view;
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
-	
-	private void initView (){
-		
-	}
+
 }

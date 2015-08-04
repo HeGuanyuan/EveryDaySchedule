@@ -4,14 +4,16 @@ import java.util.List;
 
 
 /**
- * @Class ThingEntity ÊÂ¼şÊµÌåÀà
- * @Author He Guanyuan 2015-8-1 ÏÂÎç7:59:17
+ * @Class ThingEntity äº‹ä»¶å®ä½“ç±»
+ * @Author He Guanyuan 2015-8-1 ä¸‹åˆ7:59:17
  */
 public class ThingEntity {
 	private String name;
 	private String color;
 	private String id;
 	private List<String> remarks;
+	/**æ˜¯å¦å±•å¼€flag*/
+	private boolean isExpanded;
 
 	public String getName() {
 		return name;
@@ -43,6 +45,14 @@ public class ThingEntity {
 
 	public void setRemarks(List<String> remarks) {
 		this.remarks = remarks;
+	}
+
+	public boolean isExpanded() {
+		return isExpanded;
+	}
+
+	public void setExpanded(boolean isExpanded) {
+		this.isExpanded = isExpanded;
 	}
 
 }
