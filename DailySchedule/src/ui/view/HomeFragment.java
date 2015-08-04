@@ -3,7 +3,7 @@ package ui.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.adapter.MyFragmentAdapter;
+import ui.adapter.MyFragmentPagerAdapter;
 import ui.adapter.MyViewPagerAdapter;
 
 import com.dailyschedule.R;
@@ -21,14 +21,14 @@ import core.base.BaseFragment;
 
 /**
  * @Class MyDailyFragment HomeFragment
- * @Author He Guanyuan 2015-8-3 ÏÂÎç9:35:26
+ * @Author He Guanyuan 2015-8-3 ï¿½ï¿½ï¿½ï¿½9:35:26
  */
 public class HomeFragment extends BaseFragment {
 
 	private ViewPager viewPager;
 	private List<View> viewList;
 	private ArrayList<Fragment> fragmentList;
-	private MyFragmentAdapter mAdapter;
+	private MyFragmentPagerAdapter mAdapter;
 	private ImageView cursor;
 	private TextView t1, t2, t3;
 	private int currentIndex;
@@ -60,8 +60,8 @@ public class HomeFragment extends BaseFragment {
 	}
 
 	/**
-	 *@Functiuon ³õÊ¼»¯ViewPager
-	 *@Author Heguanyuan 2015-8-3 ÏÂÎç9:29:40
+	 *@Functiuon ï¿½ï¿½Ê¼ï¿½ï¿½ViewPager
+	 *@Author Heguanyuan 2015-8-3 ï¿½ï¿½ï¿½ï¿½9:29:40
 	 */
 	private void initViewPager() {
 		View view = getView();
@@ -104,7 +104,7 @@ public class HomeFragment extends BaseFragment {
 		Fragment things = new ThingsFragment();
 		fragmentList.add(daily);
 		fragmentList.add(things);
-		mAdapter = new MyFragmentAdapter(getActivity().getSupportFragmentManager());
+		mAdapter = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
 		mAdapter.setFragmentList(fragmentList);
 		viewPager.setAdapter(mAdapter);
 	}

@@ -50,5 +50,6 @@ CropImage/*
 OneKeyShare/*
 ShareSDK/*
 SMSSDK/*
-
+XiChe/*
 *.png
+library/*
