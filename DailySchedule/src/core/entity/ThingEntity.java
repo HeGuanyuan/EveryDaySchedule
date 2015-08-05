@@ -8,21 +8,33 @@ import java.util.List;
  * @Author He Guanyuan 2015-8-1 下午7:59:17
  */
 public class ThingEntity {
-	private String name;
 	private String id;
+	private String name;
 	private String color;
+
+	private String creatTime;
+	private String endTime;
+
 	private List<String> remarks;
 	private List<String> evaluations;
-	
-	/** 是否展开 */
-	private boolean isExpanded;
 
 	public ThingEntity() {
-		name = "";
-		id = "";
-		setColor("");
-		remarks = new ArrayList<String>();
-		setEvaluations(new ArrayList<String>());
+	}
+
+	public String getCreatTime() {
+		return creatTime;
+	}
+
+	public void setCreatTime(String creatTime) {
+		this.creatTime = creatTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	public String getName() {
@@ -42,6 +54,8 @@ public class ThingEntity {
 	}
 
 	public List<String> getRemarks() {
+		if(this.remarks == null)
+			this.remarks = new ArrayList<String>();
 		return remarks;
 	}
 
@@ -49,15 +63,9 @@ public class ThingEntity {
 		this.remarks = remarks;
 	}
 
-	public boolean isExpanded() {
-		return isExpanded;
-	}
-
-	public void setExpanded(boolean isExpanded) {
-		this.isExpanded = isExpanded;
-	}
-
 	public List<String> getEvaluations() {
+		if(this.evaluations == null)
+			this.evaluations = new ArrayList<String>();
 		return evaluations;
 	}
 

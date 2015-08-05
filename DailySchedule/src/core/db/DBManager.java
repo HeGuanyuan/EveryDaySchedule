@@ -41,18 +41,29 @@ public class DBManager extends SQLiteOpenHelper {
 		this.db = db;
 		System.out.println("db oncreat");
 
-		// String creatDaily =
-		// "CREATE TABLE ?( ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(1000))";
-		// String[] dailyParams = { DailyTable.tableName, DailyTable.index,
-		// DailyTable.year, DailyTable.month, DailyTable.dayOfMonth,
-		// DailyTable.thingIds, DailyTable.wordsToday };
-		// db.execSQL(creatDaily, dailyParams);
-
-		String creatDailyTable = "CREATE TABLE DailyTabale(identifier INTEGER PRIMARY KEY autoincrement,"
-				+ "indx varchar(10), year varchar(10), monthOfYear varchar(10), " + "dayOfMonth varchar(10), dayOfWeek varchar(10),"
-				+ "thingIds varchar(10), wordsToday varchar(1000))";
+		// 1
+		String b1 = "CREATE TABLE DailyTabale(id INTEGER PRIMARY KEY autoincrement,";
+		String b2 = "identifier TEXT,";
+		String b3 = "year TEXT, monthOfYear TEXT, dayOfMonth TEXT, dayOfWeek TEXT,";
+		String b4 = "thingIds TEXT, wordsToday TEXT, evaluation TEXT";
+		String creatDailyTable = b1 + b2 + b3 + b4 + ")";
 		db.execSQL(creatDailyTable);
 
+		// 2
+		String s1 = "CREATE TABLE RecordsTable(id INTEGER PRIMARY KEY autoincrement,";
+		String s2 = "identifier TEXT, inDailyIndex TEXT,";
+		String s3 = "thingId TEXT, thingName TEXT,";
+		String s4 = "year TEXT, monthOfYear TEXT, dayOfMonth TEXT, dayOfWeek TEXT,";
+		String s5 = "remark TEXT, evaluation TEXT";
+		String creatRecordTable = s1 + s2 + s3 + s4 + s5 + ")";
+		db.execSQL(creatRecordTable);
+
+		// 3
+		String a1 = "CREATE TABLE ThingEntityTable(id INTEGER PRIMARY KEY autoincrement,";
+		String a2 = "thingId TEXT,thingName TEXT,";
+		String a3 = "createTime TEXT, endTime TEXT";
+		String creatEntityTable = a1 + a2 + ")";
+		db.execSQL(creatEntityTable);
 	}
 
 	@Override
@@ -68,7 +79,7 @@ public class DBManager extends SQLiteOpenHelper {
 		if (e != null) {
 			String id = e.getId();
 			String s = "SELECT * FROM ? WHERE ? = ?";
-			String[] params = { DailyTable.tableName, DailyTable.index, id };
+			String[] params = { DailyTable.tableName, DailyTable.identifier, id };
 			Cursor c = db.rawQuery(s, params);
 			if (c.getCount() == 1) {
 				ContentValues values = new ContentValues();
@@ -95,15 +106,4 @@ public class DBManager extends SQLiteOpenHelper {
 
 	}
 }
-// if (name.equals(dailyTableName)) {
-//
-// String sqlString =
-// "creat table ? (? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10),  )";
-// String[] params = {};
-// db.execSQL(sqlString, params);
-// } else if (name.equals(recordsTableName)) {
-//
-// } else if (name.equals(entityTableName)) {
-//
-// }
-// return null;
+
