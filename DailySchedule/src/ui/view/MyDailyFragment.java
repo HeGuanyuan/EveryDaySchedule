@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import core.base.BaseFragment;
+import core.db.DBManager;
 import core.entity.DailyEntity;
 import core.entity.ThingEntity;
 
@@ -68,6 +69,7 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 		adapter = new DailyListAdapter(getActivity());
 		adapter.setList(dailyList);
 		dailyListView.setAdapter(adapter);
+		DBManager m = new DBManager(getActivity());
 	}
 
 	
@@ -78,6 +80,7 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
+		System.out.println("id check");
 		switch (v.getId()) {
 		case R.id.btn_float:
 			// 悬浮Button
@@ -90,7 +93,7 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 	}
 
 	private void floatBtnOnclick() {
-
+		System.out.println("float on click");
 	}
 
 	@Override
