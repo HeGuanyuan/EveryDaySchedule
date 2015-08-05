@@ -21,7 +21,7 @@ public class GlobalConstants {
 		/** 表名 */
 		public static final String tableName = "DailyListTable";
 		/** 唯一index */
-		public static final String index = "index";
+		public static final String index = "identifier";
 		/** 时间信息 */
 		public static final String year = "year";
 		public static final String month = "monthOfYear";
@@ -38,7 +38,7 @@ public class GlobalConstants {
 		/** 表名 */
 		public static final String tableName = "tableName";
 		/** 唯一index */
-		public static final String index = "index";
+		public static final String index = "identifier";
 		/** 时间信息 */
 		public static final String year = "year";
 		public static final String month = "month";
@@ -54,7 +54,7 @@ public class GlobalConstants {
 		/** 表名 */
 		public static final String tableName = "ThingEntityTable";
 		/** 事件编号 */
-		public static final String index = "index";
+		public static final String index = "identifier";
 		/** 事件title */
 		public static final String name = "name";
 

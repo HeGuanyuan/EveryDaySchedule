@@ -37,8 +37,22 @@ public class DBManager extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db = SQLiteDatabase.openOrCreateDatabase(DBConfig.filePath, null);
+		// db = SQLiteDatabase.openOrCreateDatabase(DBConfig.filePath, null);
 		this.db = db;
+		System.out.println("db oncreat");
+
+		// String creatDaily =
+		// "CREATE TABLE ?( ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(10), ? varchar(1000))";
+		// String[] dailyParams = { DailyTable.tableName, DailyTable.index,
+		// DailyTable.year, DailyTable.month, DailyTable.dayOfMonth,
+		// DailyTable.thingIds, DailyTable.wordsToday };
+		// db.execSQL(creatDaily, dailyParams);
+
+		String creatDailyTable = "CREATE TABLE DailyTabale(identifier INTEGER PRIMARY KEY autoincrement,"
+				+ "indx varchar(10), year varchar(10), monthOfYear varchar(10), " + "dayOfMonth varchar(10), dayOfWeek varchar(10),"
+				+ "thingIds varchar(10), wordsToday varchar(1000))";
+		db.execSQL(creatDailyTable);
+
 	}
 
 	@Override
@@ -50,7 +64,7 @@ public class DBManager extends SQLiteOpenHelper {
 		return db;
 	}
 
-	public String  writeData(DailyEntity e)  {
+	public String writeData(DailyEntity e) {
 		if (e != null) {
 			String id = e.getId();
 			String s = "SELECT * FROM ? WHERE ? = ?";
@@ -61,14 +75,14 @@ public class DBManager extends SQLiteOpenHelper {
 				// values.put(key, value)
 				db.update(DailyTable.tableName, values, s, params);
 				return "writeData--update";
-			} else if (c.getCount() == 0){
+			} else if (c.getCount() == 0) {
 				ContentValues cv = new ContentValues();
 				db.insert(DailyTable.tableName, null, cv);
 				return "writeData--insert";
-			}else{
+			} else {
 				return "writeData--c.getCount: " + c.getCount();
 			}
-		}else {
+		} else {
 			return "entity is null";
 		}
 	}
