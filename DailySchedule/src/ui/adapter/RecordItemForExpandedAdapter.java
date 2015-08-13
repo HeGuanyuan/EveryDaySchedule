@@ -14,12 +14,12 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ThingItemForExpandedAdapter extends BaseAdapter {
+public class RecordItemForExpandedAdapter extends BaseAdapter {
 
 	private ArrayList<ThingEntity> thingList;
 	private Context context;
 
-	public ThingItemForExpandedAdapter(Context context) {
+	public RecordItemForExpandedAdapter(Context context) {
 		this.context = context;
 	}
 
@@ -71,7 +71,7 @@ public class ThingItemForExpandedAdapter extends BaseAdapter {
 		/** 评价text */
 		TextView evaluationTv = ViewHolder.get(convertView, R.id.thing_judge);
 		//
-		evaluationTv.setText(entity.getRemarks().get(0));
+//		evaluationTv.setText(entity.getRemarks().get(0));
 		/** 评价 layout */
 		LinearLayout evaluationLayout = ViewHolder.get(convertView, R.id.ranks);
 		evaluationLayout.setVisibility(View.INVISIBLE);

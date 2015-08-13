@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ThingItemAdapter extends BaseAdapter {
+public class RecordItemAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<ThingEntity> thingList;
 
-	public ThingItemAdapter(Context context) {
+	public RecordItemAdapter(Context context) {
 		this.context = context;
 		thingList = new ArrayList<ThingEntity>();
 	}

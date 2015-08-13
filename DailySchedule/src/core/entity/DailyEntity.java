@@ -2,21 +2,63 @@ package core.entity;
 
 import java.util.ArrayList;
 
-public class DailyEntity {
+import com.dailyschedule.GlobalConstants.DailyTable;
+
+import android.content.ContentValues;
+
+import utils.ToContentValues;
+
+public class DailyEntity implements ToContentValues {
 
 	private String id = "";
 	private ArrayList<ThingEntity> thingList;
 	private boolean isExpanded = false;
 
-	public String wordsToday = "";
+	private String wordsToday = "";
 	private String evaluation = "";
 
 	/** 时间信息 */
-	public String year = "";
-	public String month = "";
-	public String dayOfWeek = "";
-	public String dayOfMonth = "";
+	private String year = "";
+	private String month = "";
+	private String dayOfWeek = "";
+	private String dayOfMonth = "";
 	private String timeStamp = "";
+
+	@Override
+	public ContentValues toContentValues() {
+		// TODO Auto-generated method stub
+		ContentValues cv = new ContentValues();
+
+		cv.put("identifier", this.id);
+
+		cv.put(DailyTable.year, year);
+		cv.put(DailyTable.monthOfYear, month);
+		cv.put(DailyTable.dayOfMonth, dayOfMonth);
+		cv.put(DailyTable.dayOfWeek, dayOfWeek);
+
+		cv.put(DailyTable.thingIds, year);
+		cv.put(DailyTable.year, year);
+		
+		cv.put(DailyTable.evaluation, evaluation);
+		cv.put(DailyTable.wordsToday, wordsToday);
+		
+		return cv;
+	}
+
+	public String getThingIdsString() {
+		if (thingList != null) {
+			String s = "";
+			for (ThingEntity e : thingList) {
+				s += e.getId();
+				s += ",";
+			}
+			s = s.substring(0, s.length() - 1);
+			return s;
+
+		} else {
+			return "";
+		}
+	}
 
 	public DailyEntity() {
 
@@ -94,16 +136,9 @@ public class DailyEntity {
 		this.timeStamp = timeStamp;
 	}
 
-	public String getEvalution() {
-		return evaluation;
-	}
-
-	public void setEvalution(String evalute) {
-		this.evaluation = evalute;
-	}
-
 	public String getId() {
-		return id;
+		String idString = year + month + dayOfMonth;
+		return idString;
 	}
 
 	public void setId(String id) {

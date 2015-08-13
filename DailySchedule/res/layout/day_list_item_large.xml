@@ -5,90 +5,94 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/wraper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/day_of_mongth_tv_l"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:text="26" />
-
-        <LinearLayout
-            android:id="@+id/day_things_list_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/day_of_mongth_tv_l"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content" >
 
-            <RelativeLayout
-                android:id="@+id/daily_tv"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/day_of_mongth_tv_l"
+                android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/date_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
-                    android:text=" 2015年7月     星期五" />
-
-                <ImageView
-                    android:id="@+id/arrow_down"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/arrow_down_72px" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toLeftOf="@id/arrow_down"
-                    android:gravity="center_vertical"
-                    android:paddingRight="20dp" >
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_launcher"
-                        android:textAlignment="viewEnd" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_launcher"
-                        android:textAlignment="viewEnd" />
-                </LinearLayout>
-            </RelativeLayout>
+                android:layout_alignParentLeft="true"
+                android:gravity="center"
+                android:text="26" />
 
             <LinearLayout
-                android:id="@+id/thing_list_layout"
+                android:id="@+id/day_things_list_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/day_of_mongth_tv_l"
                 android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/daily_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:text=" 2015年7月     星期五" />
+
+                    <ImageView
+                        android:id="@+id/arrow_down"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/arrow_down_72px" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@id/arrow_down"
+                        android:gravity="center_vertical"
+                        android:paddingRight="20dp" >
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_launcher"
+                            android:textAlignment="viewEnd" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_launcher"
+                            android:textAlignment="viewEnd" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/thing_list_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/thing_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </ListView>
             </LinearLayout>
-<!-- 
-            <include layout="@layout/day_sub_list_item" />
-
-            <include layout="@layout/day_sub_list_item" />
-
-            <include layout="@layout/day_sub_list_item" />
-
-            <include layout="@layout/day_sub_list_item" />
- -->
-        </LinearLayout>
-    </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

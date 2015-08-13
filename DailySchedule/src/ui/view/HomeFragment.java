@@ -21,7 +21,7 @@ import core.base.BaseFragment;
 
 /**
  * @Class MyDailyFragment HomeFragment
- * @Author He Guanyuan 2015-8-3 ����9:35:26
+ * @Author He Guanyuan 2015-8-3 下午 9:35:26
  */
 public class HomeFragment extends BaseFragment {
 

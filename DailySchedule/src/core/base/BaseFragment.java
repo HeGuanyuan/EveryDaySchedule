@@ -1,5 +1,6 @@
 package core.base;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dailyschedule.R;
+import com.dailyschedule.GlobalConstants.UserConfig;
 
 /**
  * @Class BaseFragment 基础Fragment
@@ -55,8 +57,8 @@ public class BaseFragment extends Fragment implements OnClickListener {
 	}
 
 	/**
-	 *@Functiuon 初始化 标题栏
-	 *@Author Heguanyuan 2015-8-4 上午11:27:01
+	 * @Functiuon 初始化 标题栏
+	 * @Author Heguanyuan 2015-8-4 上午11:27:01
 	 */
 	protected void initTitleBar() {
 		System.out.println("base---> runned");
@@ -185,5 +187,31 @@ public class BaseFragment extends Fragment implements OnClickListener {
 		Toast t = new Toast(getActivity());
 		t.setText(s);
 		t.show();
+	}
+
+	/**
+	 * @Functiuon 设置显示records的范围 0123分别代表 week month 2month all
+	 * @Author Heguanyuan 2015-8-12 上午9:33:16
+	 */
+	public void setCurrentRecordsSet(String s) {
+		SharedPreferences sp = getActivity().getSharedPreferences(UserConfig.SPName, 0);
+		SharedPreferences.Editor editor = sp.edit();
+		editor.putString(UserConfig.ShowRecordsSet, s);
+		editor.commit();
+	}
+
+	/**
+	 * @Functiuon 获取显示records的范围 0123分别代表 week month 2month all
+	 * @Author Heguanyuan 2015-8-12 上午9:38:11
+	 */
+	public String getCurrentRecordsSet() {
+		SharedPreferences sp = getActivity().getSharedPreferences(UserConfig.SPName, 0);
+		String s = sp.getString(UserConfig.ShowRecordsSet, "0");
+		return s;
+	}
+
+	public String toString(int i) {
+		String s = String.valueOf(i);
+		return s;
 	}
 }

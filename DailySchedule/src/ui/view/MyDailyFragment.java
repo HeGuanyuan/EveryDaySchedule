@@ -1,16 +1,21 @@
 package ui.view;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ui.adapter.DailyListAdapter;
 import ui.adapter.DailyListAdapter.onSubItemClickListener;
 
 import com.dailyschedule.R;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import core.base.BaseFragment;
@@ -28,6 +33,8 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 	private DailyListAdapter adapter;
 	private ListView dailyListView;
 	private ArrayList<DailyEntity> dailyList;
+
+	private DBManager dbManager;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,35 +60,46 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 		View view = getView();
 		dailyListView = (ListView) view.findViewById(R.id.daily_list);
 		floatBtn = (Button) view.findViewById(R.id.btn_float);
-		
+
 		dailyList = new ArrayList<DailyEntity>();
-		
-		DailyEntity e = new DailyEntity();
-		ThingEntity tE = new ThingEntity();
-		tE.setName("sketch");
-		ArrayList<ThingEntity> tl = new ArrayList<ThingEntity>();
-		tl.add(tE);
-		e.setThingList(tl);
-		
-		dailyList.add(e);
-		
-		
+
+		// DailyEntity e = new DailyEntity();
+		// ThingEntity tE = new ThingEntity();
+		// tE.setName("sketch");
+		// ArrayList<ThingEntity> tl = new ArrayList<ThingEntity>();
+		// tl.add(tE);
+		// e.setThingList(tl);
+		//
+		// dailyList.add(e);
+
+		loadRecords();
+
 		adapter = new DailyListAdapter(getActivity());
 		adapter.setList(dailyList);
 		dailyListView.setAdapter(adapter);
+
 		DBManager m = new DBManager(getActivity());
 		m.getWritableDatabase();
+		testDB();
 	}
 
-	
 	private void setListener() {
+		// dailyListView.setOnItemClickListener(onListItemClick);
 		floatBtn.setOnClickListener(this);
 	}
+
+	OnItemClickListener onListItemClick = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			// pos从0开始,结合显示的范围确定
+			Log.d("item", position + "");
+		}
+	};
 
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
-		System.out.println("id check");
 		switch (v.getId()) {
 		case R.id.btn_float:
 			// 悬浮Button
@@ -94,11 +112,47 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 	}
 
 	private void floatBtnOnclick() {
-		System.out.println("float on click");
 	}
 
 	@Override
 	public void onSubItemClick(String timeStamp, int index) {
 
+	}
+
+	private void testDB() {
+		dbManager = new DBManager(getActivity());
+		DailyEntity e = new DailyEntity();
+		e.setDate("2015", "08", "12");
+		e.setEvaluation("3");
+		e.setId("20150810");
+		e.setWordsToday("starter");
+
+		String s = dbManager.writeData(e);
+		System.out.println(s);
+	}
+
+	private void loadRecords() {
+		String s = getCurrentRecordsSet();
+		// Calendar c = Calendar.getInstance();
+		// String monthOfYear = toString(c.get(Calendar.MONTH));
+		// String year = toString(c.get(Calendar.YEAR));
+
+		if (dailyList == null)
+			dailyList = new ArrayList<DailyEntity>();
+		Calendar c = Calendar.getInstance();
+		for (int i = 0; i < 31; i++) {
+			c.set(2015, 7, i);
+			String week = toString(c.get(Calendar.DAY_OF_WEEK) - 1);
+			Log.d("cal", "week: " + week + "," + i + 1);
+			DailyEntity e = new DailyEntity();
+			e.setDate("2015", "08", (i + 1) + "");
+			e.setDayOfWeek(week);
+			ThingEntity tE = new ThingEntity();
+			tE.setName("sketch" + (i + 1));
+			ArrayList<ThingEntity> tl = new ArrayList<ThingEntity>();
+			tl.add(tE);
+			e.setThingList(tl);
+			dailyList.add(e);
+		}
 	}
 }

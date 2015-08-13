@@ -1,9 +1,14 @@
 package core.entity;
 
-public class RecordEntity {
-	
+import utils.ToContentValues;
+import android.content.ContentValues;
+
+import com.dailyschedule.GlobalConstants.RecordsTable;
+
+public class RecordEntity implements ToContentValues {
+
 	private String index;
-	private String identifier;
+	private String id;
 
 	/** 事件信息 */
 	public String thingId;
@@ -23,6 +28,27 @@ public class RecordEntity {
 		this.setYear(y);
 		this.setMonthOfYear(m);
 		this.setDayOfMonth(d);
+	}
+
+	@Override
+	public ContentValues toContentValues() {
+		ContentValues cv = new ContentValues();
+
+		cv.put(RecordsTable.identifier, id);
+		cv.put(RecordsTable.index, index);
+		
+		cv.put(RecordsTable.year, year);
+		cv.put(RecordsTable.monthOfYear, monthOfYear);
+		cv.put(RecordsTable.dayOfMonth, dayOfMonth);
+		cv.put(RecordsTable.dayOfWeek, dayOfWeek);
+		
+		cv.put(RecordsTable.thingId, thingId);
+		cv.put(RecordsTable.thingName, thingName);
+		
+		cv.put(RecordsTable.remark, remark);
+		cv.put(RecordsTable.evaluation, evaluation);
+		
+		return cv;
 	}
 
 	public String getThingId() {
@@ -49,12 +75,12 @@ public class RecordEntity {
 		this.index = index;
 	}
 
-	public String getIdentifier() {
-		return identifier;
+	public String getId() {
+		return id;
 	}
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setId(String identifier) {
+		this.id = identifier;
 	}
 
 	public String getYear() {

@@ -4,8 +4,9 @@ public class GlobalConstants {
 
 	public static final String PackageName = "com.dailyschedule";
 
-	public interface Config {
-
+	public interface UserConfig {
+		public static final String SPName = "user_config";
+		public static final String ShowRecordsSet = "ShowRecordsSet";
 	}
 
 	/************************************** 数据库相关 *************************************************/
@@ -18,14 +19,14 @@ public class GlobalConstants {
 	// 1
 	public interface DailyTable {
 		/** 表名 */
-		public static final String tableName = "DailyListTable";
+		public static final String tableName = "DailyTable";
 		/** 唯一index */
 		public static final String identifier = "identifier";
 		/** 时间信息 */
 		public static final String year = "year";
-		public static final String month = "monthOfYear";
-		public static final String dayOfWeek = "dayOfWeek";
+		public static final String monthOfYear = "monthOfYear";
 		public static final String dayOfMonth = "dayOfMonth";
+		public static final String dayOfWeek = "dayOfWeek";
 		/** 事件id */
 		public static final String thingIds = "thingIds";
 		/** 每日寄语 */
@@ -43,7 +44,7 @@ public class GlobalConstants {
 		public static final String index = "inDailyIndex";
 		/** 时间信息 */
 		public static final String year = "year";
-		public static final String month = "monthOfYear";
+		public static final String monthOfYear = "monthOfYear";
 		public static final String dayOfWeek = "dayOfWeek";
 		public static final String dayOfMonth = "dayOfMonth";
 		/** 当日评价 */
@@ -61,7 +62,8 @@ public class GlobalConstants {
 		/** 事件信息 */
 		public static final String thingId = "thingId";
 		public static final String thingName = "thingName";
-		/** 时间相关*/
+		public static final String thingColor = "thingColor";
+		/** 时间相关 */
 		public static final String createTime = "createTime";
 		public static final String endTime = "endTime";
 	}
