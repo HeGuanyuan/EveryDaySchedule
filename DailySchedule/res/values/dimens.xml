@@ -5,5 +5,10 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="item_small_height">35dp</dimen>
     <dimen name="sub_item_small_height">30dp</dimen>
+    
+    <!-- line height -->
+    <dimen name="line_hight_s">35dp</dimen>
+    <dimen name="line_hight_m">40dp</dimen>
+    <dimen name="line_hight_l">45dp</dimen>
 
 </resources>

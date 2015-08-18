@@ -1,19 +1,16 @@
 package core.db;
 
-import utils.ToContentValues;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.dailyschedule.GlobalConstants;
 import com.dailyschedule.GlobalConstants.DBConfig;
 import com.dailyschedule.GlobalConstants.DailyTable;
 import com.dailyschedule.GlobalConstants.RecordsTable;
 import com.dailyschedule.GlobalConstants.ThingEntityTable;
-
 import core.entity.DailyEntity;
 import core.entity.RecordEntity;
 import core.entity.ThingEntity;
@@ -44,29 +41,36 @@ public class DBManager extends SQLiteOpenHelper {
 		this.db = db;
 		System.out.println("db oncreat");
 
-		// 1
-		String b1 = "CREATE TABLE DailyTable(id INTEGER PRIMARY KEY autoincrement,";
+		// table 1
+		String b1 = "CREATE TABLE daily_table(id INTEGER PRIMARY KEY autoincrement,";
 		String b2 = "identifier TEXT,";
-		String b3 = "year TEXT, monthOfYear TEXT, dayOfMonth TEXT, dayOfWeek TEXT,";
-		String b4 = "thingIds TEXT, wordsToday TEXT, evaluation TEXT";
+		String b3 = "year TEXT, month_of_year TEXT, day_of_month TEXT, day_of_week TEXT,";
+		String b4 = "thing_ids TEXT, words_today TEXT, evaluation TEXT";
 		String creatDailyTable = b1 + b2 + b3 + b4 + ")";
 		db.execSQL(creatDailyTable);
 
-		// 2
-		String s1 = "CREATE TABLE RecordsTable(id INTEGER PRIMARY KEY autoincrement,";
-		String s2 = "identifier TEXT, inDailyIndex TEXT,";
-		String s3 = "thingId TEXT, thingName TEXT,";
-		String s4 = "year TEXT, monthOfYear TEXT, dayOfMonth TEXT, dayOfWeek TEXT,";
+		// table 2
+		String s1 = "CREATE TABLE records_table(id INTEGER PRIMARY KEY autoincrement,";
+		String s2 = "identifier TEXT, in_daily_index TEXT,";
+		String s3 = "thing_id TEXT, thing_name TEXT,";
+		String s4 = "year TEXT, month_of_year TEXT, day_of_month TEXT, day_of_week TEXT,";
 		String s5 = "remark TEXT, evaluation TEXT";
 		String creatRecordTable = s1 + s2 + s3 + s4 + s5 + ")";
 		db.execSQL(creatRecordTable);
 
-		// 3
-		String a1 = "CREATE TABLE ThingEntityTable(id INTEGER PRIMARY KEY autoincrement,";
-		String a2 = "thingId TEXT,thingName TEXT,";
+		// table 3
+		String a1 = "CREATE TABLE thing_entity_table(id INTEGER PRIMARY KEY autoincrement,";
+		String a2 = "thing_id TEXT,thing_name TEXT,";
 		String a3 = "createTime TEXT, endTime TEXT";
 		String creatEntityTable = a1 + a2 + a3 + ")";
 		db.execSQL(creatEntityTable);
+		
+		// color
+		String c1 = "CREATE TABLE color_table(id INTEGER PRIMARY KEY autoincrement,";
+		String c2 = "color_id TEXT,color_name TEXT,";
+		String c3 = "color_code TEXT,label TEXT";
+		String creatColorTable = c1 + c2 + c3 + ")";
+		db.execSQL(creatColorTable);
 	}
 
 	@Override

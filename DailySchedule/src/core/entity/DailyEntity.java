@@ -36,7 +36,7 @@ public class DailyEntity implements ToContentValues {
 		cv.put(DailyTable.dayOfMonth, dayOfMonth);
 		cv.put(DailyTable.dayOfWeek, dayOfWeek);
 
-		cv.put(DailyTable.thingIds, year);
+		cv.put(DailyTable.thingIds, getThingIdsString());
 		cv.put(DailyTable.year, year);
 		
 		cv.put(DailyTable.evaluation, evaluation);

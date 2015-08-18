@@ -24,7 +24,39 @@ public class ThingEntity implements ToContentValues {
 	private List<String> remarks;
 	private List<String> evaluations;
 
+	private String label;
+	
+	/**周期属性 周期 长时间*/
+	private boolean isCyclical;
+	private String remindDayofWeek;
+	private String remindTime;
+	
+	
 	public ThingEntity() {
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getRemindDayofWeek() {
+		return remindDayofWeek;
+	}
+
+	public void setRemindDayofWeek(String remindDayofWeek) {
+		this.remindDayofWeek = remindDayofWeek;
+	}
+
+	public String getRemindTime() {
+		return remindTime;
+	}
+
+	public void setRemindTime(String remindTime) {
+		this.remindTime = remindTime;
 	}
 
 	@Override
@@ -99,6 +131,14 @@ public class ThingEntity implements ToContentValues {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public boolean isCyclical() {
+		return isCyclical;
+	}
+
+	public void setCyclical(boolean isCyclical) {
+		this.isCyclical = isCyclical;
 	}
 
 }

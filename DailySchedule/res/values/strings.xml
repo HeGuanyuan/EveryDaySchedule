@@ -16,4 +16,38 @@
         <item>星期日</item>
     </string-array>
 
+    <string name="_1">一</string>
+    <string name="_2">二</string>
+    <string name="_3">三</string>
+    <string name="_4">四</string>
+    <string name="_5">五</string>
+    <string name="_6">六</string>
+    <string name="_7">日</string>
+    <string name="repeat_string">重复</string>
+
+    <!-- color -->
+    <string-array name="color">
+
+        <!-- 1 -->
+        <item>#00375b</item>
+        <!-- 5 -->
+        <item>#de3163</item>
+        <!-- 6 -->
+        <item>#9297a1</item>
+        <!-- 7 -->
+        <item>#228fbd</item>
+        <!-- 8 -->
+        <item>#7bbfea</item>
+        <!-- 11 -->
+        <item>#be7591</item>
+        <!-- 13 -->
+        <item>#428c6d</item>
+        <!-- 14 -->
+        <item>#bfa173</item>
+        <!-- 16 -->
+        <item>#68cc93</item>
+    </string-array>
+
+    <string name="chose_color">选择颜色</string>
+
 </resources>
