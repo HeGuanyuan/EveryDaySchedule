@@ -1,16 +1,23 @@
 package core.db;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.dailyschedule.GlobalConstants;
+import com.dailyschedule.GlobalConstants.ColorTable;
 import com.dailyschedule.GlobalConstants.DBConfig;
 import com.dailyschedule.GlobalConstants.DailyTable;
 import com.dailyschedule.GlobalConstants.RecordsTable;
 import com.dailyschedule.GlobalConstants.ThingEntityTable;
+import com.dailyschedule.R;
+
+import core.entity.ColorEntity;
 import core.entity.DailyEntity;
 import core.entity.RecordEntity;
 import core.entity.ThingEntity;
@@ -28,11 +35,14 @@ public class DBManager extends SQLiteOpenHelper {
 	public DBManager(Context context, String name, CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		this.context = context;
+		this.getWritableDatabase();
+
 	}
 
 	public DBManager(Context context) {
 		super(context, BD_NAME, null, VERSON);
 		this.context = context;
+		this.getWritableDatabase();
 	}
 
 	@Override
@@ -64,13 +74,89 @@ public class DBManager extends SQLiteOpenHelper {
 		String a3 = "createTime TEXT, endTime TEXT";
 		String creatEntityTable = a1 + a2 + a3 + ")";
 		db.execSQL(creatEntityTable);
-		
+
 		// color
 		String c1 = "CREATE TABLE color_table(id INTEGER PRIMARY KEY autoincrement,";
-		String c2 = "color_id TEXT,color_name TEXT,";
-		String c3 = "color_code TEXT,label TEXT";
+		String c2 = "name TEXT,";
+		String c3 = "code TEXT, is_used TEXT, tag TEXT";
 		String creatColorTable = c1 + c2 + c3 + ")";
 		db.execSQL(creatColorTable);
+
+		// 检查更新颜色表
+		refreshColorTable();
+		// Log.d("COLOR", refreshColorTable());
+	}
+
+	/**
+	 * @Functiuon 更新颜色列表
+	 * @Author Heguanyuan 2015-8-19 下午4:13:45
+	 */
+	private String refreshColorTable() {
+		// SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "SELECT * FROM " + ColorTable.tableName;
+		Cursor cursor = db.rawQuery(sql, null);
+		String[] colorArray = context.getResources().getStringArray(R.array.color);
+		int colorNum = colorArray.length;
+		if (cursor.getCount() < colorNum) {
+			for (int i = 0; i < colorNum; i++) {
+				System.out.println("----" + colorArray[i].toString() + "-------");
+				// String str = "SELECT * FROM " + ColorTable.tableName +
+				// " WHERE " + ColorTable.colorCode + " = " +
+				// colorArray[i].toString().trim() + ";";
+				String str = "SELECT * FROM " + ColorTable.tableName + " WHERE " + ColorTable.colorCode + " = ?";
+				Cursor c = db.rawQuery(str, new String[] { colorArray[i].toString() });
+				if (c.getCount() == 0) {
+					ColorEntity e = new ColorEntity(colorArray[i]);
+					ContentValues cv = e.toContentValues();
+					db.insert(ColorTable.tableName, null, cv);
+				}
+			}
+			return "add color ----- num: " + (colorNum - cursor.getCount());
+		} else {
+			return "add color ----- no new";
+		}
+	}
+
+	/**
+	 * @Functiuon 获取未使用的颜色列表
+	 * @Author Heguanyuan 2015-8-19 下午4:13:21
+	 */
+	public ArrayList<ColorEntity> getColorArray() {
+		ArrayList<ColorEntity> array = new ArrayList<ColorEntity>();
+
+		String sql = "SELECT * FROM " + ColorTable.tableName + " WHERE " + ColorTable.isUsed + " = " + "'0'";
+		String[] params = new String[] { ColorTable.tableName, ColorTable.isUsed };
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
+		Cursor c = db.rawQuery(sql, null);
+
+		while (c.moveToNext()) {
+			String code = c.getString(c.getColumnIndex(ColorTable.colorCode));
+			String isUsed = c.getString(c.getColumnIndex(ColorTable.isUsed));
+			ColorEntity e = new ColorEntity(code, isUsed);
+			array.add(e);
+		}
+		return array;
+	}
+
+	/**
+	 * @Functiuon 更新颜色信息 （设置 已/未 使用）
+	 * @Author Heguanyuan 2015-8-19 下午4:17:40
+	 */
+	public String updateColorInfo(ColorEntity e) {
+
+		String sql = "SELECT * FROM ? WHERE ?=" + e.getCode();
+		String[] params = new String[] { ColorTable.tableName, ColorTable.colorCode };
+		Cursor c = db.rawQuery(sql, params);
+		if (c.getCount() == 1) {
+			ContentValues cv = e.toContentValues();
+			String whereClause = ColorTable.colorCode + " = " + e.getCode();
+			int count = db.update(ColorTable.tableName, cv, whereClause, null);
+			return "updateColorInfo----> updated " + count;
+		} else {
+			return "updateColorInfo----> failed c.getCount = " + c.getCount();
+		}
 	}
 
 	@Override
@@ -143,7 +229,6 @@ public class DBManager extends SQLiteOpenHelper {
 	}
 
 	public String writeData(RecordEntity e) {
-
 		SQLiteDatabase db = this.getWritableDatabase();
 		if (e != null) {
 			String id = e.getId();

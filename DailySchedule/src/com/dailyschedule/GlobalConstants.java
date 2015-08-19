@@ -72,7 +72,6 @@ public class GlobalConstants {
 	// color
 	public interface ColorTable {
 		public static final String tableName = "color_table";
-		
 		public static final String colorName = "name";
 		public static final String colorCode = "code";
 		public static final String tag = "tag";

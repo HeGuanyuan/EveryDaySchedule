@@ -1,39 +1,35 @@
 package ui.view;
 
 import ui.adapter.ColorGridAdapter;
+import ui.adapter.ColorGridAdapter.colorGridItemOnClickListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import com.dailyschedule.R;
-
 import core.base.BaseFragment;
 
 /**
  * @Class AddThingFragment 添加事件
  * @Author He Guanyuan 2015-8-13 下午3:55:18
  */
-public class AddThingFragment extends BaseFragment implements OnClickListener {
+public class AddThingFragment extends BaseFragment implements OnClickListener, colorGridItemOnClickListener {
 
 	private EditText nameTv;
-
+	private ColorGridAdapter colorAdapter;
 	private CheckBox isCyclicalCb;
 	private LinearLayout remindLayout;
 	private HorizontalScrollView choseRemindDayLayout;
@@ -101,7 +97,8 @@ public class AddThingFragment extends BaseFragment implements OnClickListener {
 		cancelBtn = (Button) view.findViewById(R.id.btn_cancel);
 
 		colorGridView = (GridView) view.findViewById(R.id.color_grid);
-		ColorGridAdapter colorAdapter = new ColorGridAdapter(getActivity());
+		colorAdapter = new ColorGridAdapter(getActivity());
+		colorAdapter.setGridItemOnClickListener(this);
 		colorGridView.setAdapter(colorAdapter);
 	}
 
@@ -153,7 +150,7 @@ public class AddThingFragment extends BaseFragment implements OnClickListener {
 		});
 
 		/** 颜色选择 */
-		colorGridView.setOnItemClickListener(onColorGridClick);
+		// colorGridView.setOnItemClickListener(onColorGridClick);
 
 	}
 
@@ -214,13 +211,10 @@ public class AddThingFragment extends BaseFragment implements OnClickListener {
 	};
 
 	/** 颜色选择 */
-	OnItemClickListener onColorGridClick = new OnItemClickListener() {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			// position 从0开始
-			Log.d("color", position + "");
-		}
-	};
+	@Override
+	public void itemOnClick(int pos) {
+		// TODO Auto-generated method stub
+		System.out.println("color item " + pos);
+	}
 
 }

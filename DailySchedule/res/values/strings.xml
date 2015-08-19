@@ -29,23 +29,23 @@
     <string-array name="color">
 
         <!-- 1 -->
-        <item>#00375b</item>
+        <item>00375b</item>
         <!-- 5 -->
-        <item>#de3163</item>
+        <item>de3163</item>
         <!-- 6 -->
-        <item>#9297a1</item>
+        <item>9297a1</item>
         <!-- 7 -->
-        <item>#228fbd</item>
+        <item>228fbd</item>
         <!-- 8 -->
-        <item>#7bbfea</item>
+        <item>7bbfea</item>
         <!-- 11 -->
-        <item>#be7591</item>
+        <item>be7591</item>
         <!-- 13 -->
-        <item>#428c6d</item>
+        <item>428c6d</item>
         <!-- 14 -->
-        <item>#bfa173</item>
+        <item>bfa173</item>
         <!-- 16 -->
-        <item>#68cc93</item>
+        <item>68cc93</item>
     </string-array>
 
     <string name="chose_color">选择颜色</string>

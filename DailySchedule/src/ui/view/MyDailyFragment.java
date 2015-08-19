@@ -79,8 +79,8 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 		dailyListView.setAdapter(adapter);
 
 		DBManager m = new DBManager(getActivity());
-		m.getWritableDatabase();
-		testDB();
+//		m.getWritableDatabase();
+//		testDB();
 	}
 
 	private void setListener() {

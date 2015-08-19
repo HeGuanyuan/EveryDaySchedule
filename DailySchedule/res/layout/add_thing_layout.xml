@@ -61,8 +61,11 @@
                 android:id="@+id/color_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:numColumns="5"
-                android:scrollbars="none" >
+                android:scrollbars="none" 
+                >
             </GridView>
         </LinearLayout>
 
