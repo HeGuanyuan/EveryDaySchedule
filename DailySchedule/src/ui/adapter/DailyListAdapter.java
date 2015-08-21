@@ -61,7 +61,6 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		DailyEntity entity = dailyEntityList.get(position);
-		Log.d("getView", "in dailylistadapter");
 
 		if (entity.isExpanded()) {
 			Log.d("getView", " 展 开 ");
@@ -146,7 +145,6 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 			LinearLayout contentLayout = ViewHolder.get(convertView, R.id.things_layout);
 
 			if (contentLayout.getChildCount() == 0) {
-				Log.d("getView", "=====in if");
 				RecordItemAdapter smallAdapter = new RecordItemAdapter(context);
 				smallAdapter.setList(entity.getThingList());
 				for (int i = 0; i < smallAdapter.getCount(); i++) {

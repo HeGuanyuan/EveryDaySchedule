@@ -30,6 +30,10 @@ public class ColorGridAdapter extends BaseAdapter implements OnClickListener {
 		DBManager dbManager = new DBManager(context);
 		if (context != null) {
 			colorArray = dbManager.getColorArray();
+			if (colorArray.size() > 0) {
+				lastPos = 0;
+				colorArray.get(0).setChecked(true);
+			}
 		} else {
 			colorArray = new ArrayList<ColorEntity>();
 		}
@@ -112,8 +116,8 @@ public class ColorGridAdapter extends BaseAdapter implements OnClickListener {
 	}
 
 	/**
-	 *@Functiuon 获取被选中的ColorEntity
-	 *@Author Heguanyuan 2015-8-19 下午7:29:59
+	 * @Functiuon 获取被选中的ColorEntity
+	 * @Author Heguanyuan 2015-8-19 下午7:29:59
 	 */
 	public ColorEntity getColorEntityChecked() {
 		if (colorArray != null) {

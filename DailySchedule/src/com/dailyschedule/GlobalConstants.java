@@ -10,6 +10,12 @@ public class GlobalConstants {
 		public static final String ShowRecordsSet = "ShowRecordsSet";
 	}
 
+	public interface EntityIds {
+		public static final String SPName = "thing_ids";
+		public static int thingId = 0;
+		public static int recordsId = 0;
+	}
+
 	/************************************** 数据库相关 *************************************************/
 	public interface DBConfig {
 		public static final String fileName = "daily.db";
@@ -66,7 +72,12 @@ public class GlobalConstants {
 		public static final String thingColor = "thing_color";
 		/** 时间相关 */
 		public static final String createTime = "create_time";
-		public static final String endTime = "endTime";
+		public static final String endTime = "end_time";
+		/** 周期 */
+		public static final String isCyclical = "is_cyclical";
+		public static final String remindDayOfWeek = "remind_day";
+		public static final String remindTime = "remind_time";
+
 	}
 
 	// color

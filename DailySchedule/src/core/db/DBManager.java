@@ -70,15 +70,17 @@ public class DBManager extends SQLiteOpenHelper {
 
 		// table 3
 		String a1 = "CREATE TABLE thing_entity_table(id INTEGER PRIMARY KEY autoincrement,";
-		String a2 = "thing_id TEXT,thing_name TEXT,";
-		String a3 = "createTime TEXT, endTime TEXT";
-		String creatEntityTable = a1 + a2 + a3 + ")";
+		String a2 = "thing_id TEXT,thing_name TEXT,thing_color TEXT,";
+		String a3 = "create_time TEXT, end_time TEXT,";
+		String a4 = "is_cyclical TEXT, remind_day TEXT, remind_time TEXT";
+		String creatEntityTable = a1 + a2 + a3 + a4 + ")";
 		db.execSQL(creatEntityTable);
 
 		// color
 		String c1 = "CREATE TABLE color_table(id INTEGER PRIMARY KEY autoincrement,";
 		String c2 = "name TEXT,";
 		String c3 = "code TEXT, is_used TEXT, tag TEXT";
+
 		String creatColorTable = c1 + c2 + c3 + ")";
 		db.execSQL(creatColorTable);
 
@@ -125,7 +127,7 @@ public class DBManager extends SQLiteOpenHelper {
 		ArrayList<ColorEntity> array = new ArrayList<ColorEntity>();
 
 		String sql = "SELECT * FROM " + ColorTable.tableName + " WHERE " + ColorTable.isUsed + " = " + "'0'";
-		String[] params = new String[] { ColorTable.tableName, ColorTable.isUsed };
+//		String[] params = new String[] { ColorTable.tableName, ColorTable.isUsed };
 		if (db == null) {
 			db = this.getWritableDatabase();
 		}
@@ -145,17 +147,19 @@ public class DBManager extends SQLiteOpenHelper {
 	 * @Author Heguanyuan 2015-8-19 下午4:17:40
 	 */
 	public String updateColorInfo(ColorEntity e) {
-
-		String sql = "SELECT * FROM ? WHERE ?=" + e.getCode();
-		String[] params = new String[] { ColorTable.tableName, ColorTable.colorCode };
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
+		String sql = "SELECT * FROM " + ColorTable.tableName + " WHERE " + ColorTable.colorCode + " = ?";
+		String[] params = new String[] { e.getCode().toString() };
 		Cursor c = db.rawQuery(sql, params);
 		if (c.getCount() == 1) {
 			ContentValues cv = e.toContentValues();
-			String whereClause = ColorTable.colorCode + " = " + e.getCode();
-			int count = db.update(ColorTable.tableName, cv, whereClause, null);
+			String whereClause = ColorTable.colorCode + " = ?";
+			int count = db.update(ColorTable.tableName, cv, whereClause, new String[] { e.getCode() });
 			return "updateColorInfo----> updated " + count;
 		} else {
-			return "updateColorInfo----> failed c.getCount = " + c.getCount();
+			return "updateColorInfo----> failed c.getCount = " + c.getCount() + "//" + e.getCode();
 		}
 	}
 
@@ -202,15 +206,15 @@ public class DBManager extends SQLiteOpenHelper {
 	public String writeData(ThingEntity e) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		if (e != null) {
-			String id = e.getId();
-			String s = "SELECT * FROM " + ThingEntityTable.tableName + " WHERE " + ThingEntityTable.thingId + " = " + id;
-
-			Cursor c = db.rawQuery(s, null);
+			String name = e.getName();
+			String s = "SELECT * FROM " + ThingEntityTable.tableName + " WHERE ? = ?";
+			String[] params = new String[] { ThingEntityTable.thingName, name };
+			Cursor c = db.rawQuery(s, params);
 			if (c.getCount() == 1) {
 				ContentValues values = e.toContentValues();
 				// values.put(key, value)
 				/** update此处仅 " ? = ? " */
-				String updateString = ThingEntityTable.thingId + " = " + id;
+				String updateString = ThingEntityTable.thingId + " = " + name;
 				db.update(ThingEntityTable.tableName, values, updateString, null);
 				db.close();
 				return "writeData--update";

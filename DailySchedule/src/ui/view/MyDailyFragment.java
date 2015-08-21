@@ -143,7 +143,7 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 		for (int i = 0; i < 31; i++) {
 			c.set(2015, 7, i);
 			String week = toString(c.get(Calendar.DAY_OF_WEEK) - 1);
-			Log.d("cal", "week: " + week + "," + i + 1);
+//			Log.d("cal", "week: " + week + "," + i + 1);
 			DailyEntity e = new DailyEntity();
 			e.setDate("2015", "08", (i + 1) + "");
 			e.setDayOfWeek(week);

@@ -14,24 +14,23 @@ import utils.ToContentValues;
  * @Author He Guanyuan 2015-8-1 下午7:59:17
  */
 public class ThingEntity implements ToContentValues {
-	private String id;
-	private String name;
-	private String color;
+	private String id = "";
+	private String name = "";
+	private String color = "";
 
-	private String creatTime;
-	private String endTime;
+	private String creatTime = "";
+	private String endTime = "";
 
 	private List<String> remarks;
 	private List<String> evaluations;
 
-	private String label;
-	
-	/**周期属性 周期 长时间*/
+	private String label = "";
+
+	/** 周期属性 周期 长时间 */
 	private boolean isCyclical;
 	private String remindDayofWeek;
 	private String remindTime;
-	
-	
+
 	public ThingEntity() {
 	}
 
@@ -62,14 +61,19 @@ public class ThingEntity implements ToContentValues {
 	@Override
 	public ContentValues toContentValues() {
 		ContentValues cv = new ContentValues();
-		
+
 		cv.put(ThingEntityTable.thingId, id);
+
 		cv.put(ThingEntityTable.thingName, name);
 		cv.put(ThingEntityTable.thingColor, color);
-		
+
 		cv.put(ThingEntityTable.createTime, creatTime);
 		cv.put(ThingEntityTable.endTime, endTime);
-		
+
+		cv.put(ThingEntityTable.isCyclical, isCyclicalString());
+		cv.put(ThingEntityTable.remindDayOfWeek, remindDayofWeek);
+		cv.put(ThingEntityTable.remindTime, remindTime);
+
 		return cv;
 	}
 
@@ -135,6 +139,14 @@ public class ThingEntity implements ToContentValues {
 
 	public boolean isCyclical() {
 		return isCyclical;
+	}
+
+	public String isCyclicalString() {
+		if (isCyclical)
+			return "1";
+		else {
+			return "0";
+		}
 	}
 
 	public void setCyclical(boolean isCyclical) {

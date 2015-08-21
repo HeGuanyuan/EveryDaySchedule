@@ -1,5 +1,6 @@
 package core.base;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dailyschedule.R;
 import com.dailyschedule.GlobalConstants.UserConfig;
+import com.dailyschedule.R;
 
 /**
  * @Class BaseFragment 基础Fragment
@@ -183,9 +184,8 @@ public class BaseFragment extends Fragment implements OnClickListener {
 
 	/********************************************** utils ******************************************/
 
-	public void showToast(String s) {
-		Toast t = new Toast(getActivity());
-		t.setText(s);
+	public void showToast(Context context, String s) {
+		Toast t = Toast.makeText(context, s, Toast.LENGTH_SHORT);
 		t.show();
 	}
 
@@ -214,4 +214,22 @@ public class BaseFragment extends Fragment implements OnClickListener {
 		String s = String.valueOf(i);
 		return s;
 	}
+
+	public String toString(long i) {
+		String s = String.valueOf(i);
+		return s;
+	}
+
+	/**
+	 * @Functiuon 检测字符串是否为空
+	 * @Author Heguanyuan 2015-8-21 下午3:58:54
+	 */
+	public static boolean isEmpty(String value) {
+		boolean result = false;
+		if (value == null || value.trim().length() == 0 || value.equalsIgnoreCase("null")) {
+			result = true;
+		}
+		return result;
+	}
+
 }

@@ -1,10 +1,17 @@
 package ui.view;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import ui.adapter.ColorGridAdapter;
 import ui.adapter.ColorGridAdapter.colorGridItemOnClickListener;
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,8 +26,13 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import com.dailyschedule.R;
+
 import core.base.BaseFragment;
+import core.db.DBManager;
+import core.entity.ColorEntity;
+import core.entity.ThingEntity;
 
 /**
  * @Class AddThingFragment 添加事件
@@ -29,7 +41,6 @@ import core.base.BaseFragment;
 public class AddThingFragment extends BaseFragment implements OnClickListener, colorGridItemOnClickListener {
 
 	private EditText nameTv;
-	private ColorGridAdapter colorAdapter;
 	private CheckBox isCyclicalCb;
 	private LinearLayout remindLayout;
 	private HorizontalScrollView choseRemindDayLayout;
@@ -50,8 +61,11 @@ public class AddThingFragment extends BaseFragment implements OnClickListener, c
 	private Button addBtn;
 	private Button cancelBtn;
 
+	private DBManager dbManager;
+
 	/** color */
 	private GridView colorGridView;
+	private ColorGridAdapter colorAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +81,7 @@ public class AddThingFragment extends BaseFragment implements OnClickListener, c
 		setTitleTxt("创建事件");
 		initView();
 		setListener();
+		dbManager = new DBManager(getActivity());
 	}
 
 	private void initView() {
@@ -140,7 +155,13 @@ public class AddThingFragment extends BaseFragment implements OnClickListener, c
 
 					@Override
 					public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-						remindTimeString = hourOfDay + ":" + minute + "";
+
+						SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+						Calendar c = Calendar.getInstance();
+						c.set(2015, 8, 21, hourOfDay, minute);
+						remindTimeString = format.format(c.getTime());
+
+						// remindTimeString = hourOfDay + ":" + minute + "";
 						remindTimeTxt.setText(remindTimeString);
 						remindTv.setText("提醒时间: ");
 					}
@@ -151,6 +172,9 @@ public class AddThingFragment extends BaseFragment implements OnClickListener, c
 
 		/** 颜色选择 */
 		// colorGridView.setOnItemClickListener(onColorGridClick);
+
+		cancelBtn.setOnClickListener(this);
+		addBtn.setOnClickListener(this);
 
 	}
 
@@ -170,10 +194,13 @@ public class AddThingFragment extends BaseFragment implements OnClickListener, c
 
 	};
 
-	private void addThingOperation() {
+	private void c() {
+		ThingEntity entity = new ThingEntity();
 		String name;
 		if (nameTv != null) {
 			name = nameTv.getText().toString();
+		} else {
+
 		}
 
 		boolean isCyclical;
@@ -194,6 +221,72 @@ public class AddThingFragment extends BaseFragment implements OnClickListener, c
 		}
 		String color = "";
 
+		dbManager.writeData(entity);
+	}
+
+	private void addThingOperation() {
+		String name;
+		String colorCode;
+		String creatTime = toString(Calendar.getInstance().getTimeInMillis() / 1000);
+		// String isCyslical = "";
+		String remindDayOfWeek = "";
+		String remindTime = remindTimeString;
+
+		ThingEntity entity = new ThingEntity();
+		/** name */
+		if (nameTv.getText().toString().length() > 0) {
+			name = nameTv.getText().toString();
+			entity.setName(name);
+		} else {
+			showToast(getActivity(), "请输入事件名称");
+			return;
+		}
+
+		/** 颜色 */
+		colorCode = colorAdapter.getColorEntityChecked().getCode();
+		entity.setColor(colorCode);
+
+		/** 创建时间 */
+		entity.setCreatTime(creatTime);
+
+		/** 周期 */
+		if (isCyclicalCb.isChecked()) {
+			entity.setCyclical(true);
+
+			/** remindDayOfWeek */
+			for (int i = 0; i < checkboxStata.length; i++) {
+				if (checkboxStata[i] == true) {
+					remindDayOfWeek += toString(i);
+					remindDayOfWeek += ",";
+				}
+			}
+			remindDayOfWeek = remindDayOfWeek.substring(0, remindDayOfWeek.length() - 1);
+			if (remindDayOfWeek.length() < 1) {
+				showToast(getActivity(), "请选择提醒日期");
+				return;
+			}
+			entity.setRemindDayofWeek(remindDayOfWeek);
+
+			/** remindTime */
+			if (!isEmpty(remindTime)) {
+				entity.setRemindTime(remindTime);
+			} else {
+				showToast(getActivity(), "请选择提醒时间");
+				return;
+			}
+
+		} else {
+			entity.setCyclical(false);
+		}
+
+		/** 标签 */
+
+		dbManager.writeData(entity);
+		ColorEntity color = new ColorEntity(colorCode, "1");
+		String res = dbManager.updateColorInfo(color);
+		Log.d("colorinfo", res);
+		showToast(getActivity(), "添加成功");
+		getActivity().finish();
 	}
 
 	/** 选择每周重复的日期 的监听器 */
