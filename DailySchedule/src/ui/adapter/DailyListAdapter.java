@@ -72,7 +72,7 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 			ListView lv = (ListView) convertView.findViewById(R.id.thing_list_view);
 			if (lv.getChildCount() == 0) {
 				subAdapter = new RecordItemForExpandedAdapter(context);
-				subAdapter.setList(entity.getThingList());
+				subAdapter.setList(entity.getRecordsList());
 				lv.setAdapter(subAdapter);
 			}
 			/** wraper*/
@@ -146,7 +146,7 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 
 			if (contentLayout.getChildCount() == 0) {
 				RecordItemAdapter smallAdapter = new RecordItemAdapter(context);
-				smallAdapter.setList(entity.getThingList());
+				smallAdapter.setList(entity.getRecordsList());
 				for (int i = 0; i < smallAdapter.getCount(); i++) {
 					/** 获取sublist的item */
 					View view = smallAdapter.getView(i, null, parent);

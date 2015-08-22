@@ -62,7 +62,7 @@ public class BaseFragment extends Fragment implements OnClickListener {
 	 * @Author Heguanyuan 2015-8-4 上午11:27:01
 	 */
 	protected void initTitleBar() {
-		System.out.println("base---> runned");
+//		System.out.println("base---> runned");
 		View view = getView();
 		titleBarLayout = (RelativeLayout) view.findViewById(R.id.title_bar_layout);
 		leftBtn = (TextView) view.findViewById(R.id.left_btn_txt);
@@ -71,6 +71,8 @@ public class BaseFragment extends Fragment implements OnClickListener {
 		rightBtn = (TextView) view.findViewById(R.id.right_btn_txt);
 		titleTv = (TextView) view.findViewById(R.id.title_txt);
 	}
+	
+	
 
 	/********************************************** 监听 点击事件 ******************************************/
 	/**

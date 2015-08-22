@@ -3,21 +3,31 @@ package ui.view;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ui.adapter.AddRecordGridAdapter;
 import ui.adapter.DailyListAdapter;
 import ui.adapter.DailyListAdapter.onSubItemClickListener;
-
-import com.dailyschedule.R;
-
-import android.database.sqlite.SQLiteDatabase;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import com.dailyschedule.R;
 import core.base.BaseFragment;
 import core.db.DBManager;
 import core.entity.DailyEntity;
@@ -33,8 +43,13 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 	private DailyListAdapter adapter;
 	private ListView dailyListView;
 	private ArrayList<DailyEntity> dailyList;
-
+	private PopupWindow popWindow;
 	private DBManager dbManager;
+
+	// 记录选择的时间
+	private int Year;
+	private int MonthOfYear;
+	private int DayOfMonth;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,8 +94,8 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 		dailyListView.setAdapter(adapter);
 
 		DBManager m = new DBManager(getActivity());
-//		m.getWritableDatabase();
-//		testDB();
+		// m.getWritableDatabase();
+		// testDB();
 	}
 
 	private void setListener() {
@@ -112,6 +127,7 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 	}
 
 	private void floatBtnOnclick() {
+		showMenu();
 	}
 
 	@Override
@@ -143,7 +159,7 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 		for (int i = 0; i < 31; i++) {
 			c.set(2015, 7, i);
 			String week = toString(c.get(Calendar.DAY_OF_WEEK) - 1);
-//			Log.d("cal", "week: " + week + "," + i + 1);
+			// Log.d("cal", "week: " + week + "," + i + 1);
 			DailyEntity e = new DailyEntity();
 			e.setDate("2015", "08", (i + 1) + "");
 			e.setDayOfWeek(week);
@@ -151,8 +167,110 @@ public class MyDailyFragment extends BaseFragment implements onSubItemClickListe
 			tE.setName("sketch" + (i + 1));
 			ArrayList<ThingEntity> tl = new ArrayList<ThingEntity>();
 			tl.add(tE);
-			e.setThingList(tl);
+			e.setRecordsList(tl);
 			dailyList.add(e);
 		}
 	}
+
+	/**
+	 * @Functiuon 显示菜单
+	 * @Author Heguanyuan 2015-8-22 下午12:23:12
+	 */
+	public void showMenu() {
+		View convertView = getActivity().getLayoutInflater().inflate(R.layout.popwindow_layout, null);
+
+		TextView addTv = (TextView) convertView.findViewById(R.id.add);
+		addTv.setOnClickListener(menuItemOnClickListener);
+
+		popWindow = new PopupWindow(convertView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+		// popWindow.setOnDismissListener(onDismissListener)
+		popWindow.setTouchable(true);
+		Drawable d = getActivity().getResources().getDrawable(R.drawable.ic_launcher);
+		// 这个并没有显示backgroundrawble
+		popWindow.setBackgroundDrawable(d);
+		/** 偏移向左上是 + */
+		popWindow.showAtLocation(floatBtn, Gravity.RIGHT | Gravity.BOTTOM, 50, 30);
+		// popWindow.showAsDropDown();
+	}
+
+	OnClickListener menuItemOnClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.add:
+				/** 添加一天 */
+				addDaily();
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
+
+	/**
+	 * @Functiuon 添加一条记录
+	 * @Author Heguanyuan 2015-8-22 下午3:51:12
+	 */
+	private String addRecord() {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		/** view */
+		View v = LayoutInflater.from(getActivity()).inflate(R.layout.add_record_layout, null);
+		builder.setView(v);
+
+		GridView gv = (GridView) v.findViewById(R.id.add_record_grid);
+		AddRecordGridAdapter a = new AddRecordGridAdapter(getActivity());
+		gv.setAdapter(a);
+		/** item点击事件 */
+		gv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+			}
+		});
+
+		builder.setTitle("选择事件");
+		AlertDialog dialog = builder.create();
+
+		dialog.show();
+		return "";
+	}
+
+	/**
+	 * @Functiuon 添加一天
+	 * @Author Heguanyuan 2015-8-22 下午6:39:49
+	 */
+	@SuppressWarnings("deprecation")
+	private String addDaily() {
+
+		Calendar c = Calendar.getInstance();
+		Year = c.get(Calendar.YEAR);
+		MonthOfYear = c.get(Calendar.MONTH);
+		DayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+
+		DatePickerDialog dialog = new DatePickerDialog(getActivity(), new OnDateSetListener() {
+
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				Year = year;
+				MonthOfYear = monthOfYear;
+				DayOfMonth = dayOfMonth;
+				
+				DailyEntity e = new DailyEntity(Year, MonthOfYear, DayOfMonth);
+				if (dbManager == null)
+					dbManager = new DBManager(getActivity());
+				String info = dbManager.writeData(e);
+				Log.d("write daily", info);
+				
+			}
+		}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+		dialog.setTitle("选择日期");
+		dialog.show();
+		return "";
+	}
+
 }

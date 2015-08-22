@@ -120,17 +120,92 @@ public class DBManager extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * @Functiuon 获取daily列表
+	 * @Author Heguanyuan 2015-8-22 下午8:01:10
+	 */
+	public ArrayList<DailyEntity> getDailyArray() {
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
+		ArrayList<DailyEntity> list = new ArrayList<DailyEntity>();
+		String sql = "SELECT * FROM " + DailyTable.tableName + " ORDER BY " + DailyTable.identifier;
+		Cursor c = db.rawQuery(sql, null);
+		while (c.moveToNext()) {
+			String identifier = c.getString(c.getColumnIndex(DailyTable.identifier));
+
+			String dayOfWeek = c.getString(c.getColumnIndex(DailyTable.dayOfWeek));
+
+			String thingIds = c.getString(c.getColumnIndex(DailyTable.thingIds));
+			String wordsToday = c.getString(c.getColumnIndex(DailyTable.wordsToday));
+			String evaluation = c.getString(c.getColumnIndex(DailyTable.evaluation));
+
+			DailyEntity e = new DailyEntity(identifier);
+			e.setDayOfWeek(dayOfWeek);
+		}
+		return list;
+	}
+
+	/**
+	 * @Functiuon 获取事件列表
+	 * @Author Heguanyuan 2015-8-22 上午10:18:23
+	 */
+	public ArrayList<ThingEntity> getThingArray() {
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
+		ArrayList<ThingEntity> l = new ArrayList<ThingEntity>();
+		String sql = "SELECT * FROM " + ThingEntityTable.tableName;
+		Cursor c = db.rawQuery(sql, null);
+		while (c.moveToNext()) {
+			ThingEntity e = new ThingEntity();
+			e.setName(c.getString(c.getColumnIndex(ThingEntityTable.thingName)));
+			e.setColor(c.getString(c.getColumnIndex(ThingEntityTable.thingColor)));
+			e.setCreatTime(c.getString(c.getColumnIndex(ThingEntityTable.createTime)));
+			e.setEndTime(c.getString(c.getColumnIndex(ThingEntityTable.endTime)));
+
+			if (c.getString(c.getColumnIndex(ThingEntityTable.isCyclical)).equals("1")) {
+				e.setCyclical(true);
+				String remindDay = c.getString(c.getColumnIndex(ThingEntityTable.remindDayOfWeek));
+				String remindTime = c.getString(c.getColumnIndex(ThingEntityTable.remindTime));
+				e.setRemindDayofWeek(remindDay);
+				e.setRemindTime(remindTime);
+
+			} else {
+				e.setCyclical(false);
+			}
+			l.add(e);
+		}
+		return l;
+	}
+
+	/**
+	 *@Functiuon 获取记录 实体
+	 *@Author Heguanyuan 2015-8-22 下午8:17:07
+	 */
+	public RecordEntity getRecordEntity(String identifer) {
+		RecordEntity e = new RecordEntity();
+		String sql = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.identifier + " = ?";
+		Cursor c = db.rawQuery(sql, new String[]{identifer});
+		if(c.getCount() == 1){
+			while(c.moveToNext()){
+				String name;
+			}
+		}
+		return e;
+	}
+
+	/**
 	 * @Functiuon 获取未使用的颜色列表
 	 * @Author Heguanyuan 2015-8-19 下午4:13:21
 	 */
 	public ArrayList<ColorEntity> getColorArray() {
-		ArrayList<ColorEntity> array = new ArrayList<ColorEntity>();
-
-		String sql = "SELECT * FROM " + ColorTable.tableName + " WHERE " + ColorTable.isUsed + " = " + "'0'";
-//		String[] params = new String[] { ColorTable.tableName, ColorTable.isUsed };
 		if (db == null) {
 			db = this.getWritableDatabase();
 		}
+		ArrayList<ColorEntity> array = new ArrayList<ColorEntity>();
+		String sql = "SELECT * FROM " + ColorTable.tableName + " WHERE " + ColorTable.isUsed + " = " + "'0'";
+		// String[] params = new String[] { ColorTable.tableName,
+		// ColorTable.isUsed };
 		Cursor c = db.rawQuery(sql, null);
 
 		while (c.moveToNext()) {
@@ -174,28 +249,26 @@ public class DBManager extends SQLiteOpenHelper {
 
 	/************************************************** 写入实体类 ********************************************************/
 	public String writeData(DailyEntity e) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
 		if (e != null) {
-			String id = e.getId();
-			String s = "SELECT * FROM " + DailyTable.tableName + " WHERE " + DailyTable.identifier + " = " + id;
-			// String[] params = { DailyTable.tableName, DailyTable.identifier,
-			// id };
-			Cursor c = db.rawQuery(s, null);
+			String identifer = e.getIdentifer();
+			String s = "SELECT * FROM " + DailyTable.tableName + " WHERE " + DailyTable.identifier + " = ?";
+			String[] params = { identifer };
+			Cursor c = db.rawQuery(s, params);
 			if (c.getCount() == 1) {
 				ContentValues values = e.toContentValues();
 				// values.put(key, value)
 				/** update此处仅 " ? = ? " */
-				String updateString = DailyTable.identifier + " = " + id;
+				String updateString = DailyTable.identifier + " = " + identifer;
 				db.update(DailyTable.tableName, values, updateString, null);
-				db.close();
 				return "writeData--update";
 			} else if (c.getCount() == 0) {
 				ContentValues cv = e.toContentValues();
 				db.insert(DailyTable.tableName, null, cv);
-				db.close();
 				return "writeData--insert";
 			} else {
-				db.close();
 				return "writeData--c.getCount: " + c.getCount();
 			}
 		} else {
@@ -204,7 +277,9 @@ public class DBManager extends SQLiteOpenHelper {
 	}
 
 	public String writeData(ThingEntity e) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
 		if (e != null) {
 			String name = e.getName();
 			String s = "SELECT * FROM " + ThingEntityTable.tableName + " WHERE ? = ?";
@@ -216,15 +291,12 @@ public class DBManager extends SQLiteOpenHelper {
 				/** update此处仅 " ? = ? " */
 				String updateString = ThingEntityTable.thingId + " = " + name;
 				db.update(ThingEntityTable.tableName, values, updateString, null);
-				db.close();
 				return "writeData--update";
 			} else if (c.getCount() == 0) {
 				ContentValues cv = e.toContentValues();
 				db.insert(ThingEntityTable.tableName, null, cv);
-				db.close();
 				return "writeData--insert";
 			} else {
-				db.close();
 				return "writeData--c.getCount: " + c.getCount();
 			}
 		} else {
@@ -233,7 +305,9 @@ public class DBManager extends SQLiteOpenHelper {
 	}
 
 	public String writeData(RecordEntity e) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		if (db == null) {
+			db = this.getWritableDatabase();
+		}
 		if (e != null) {
 			String id = e.getId();
 			String s = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.thingId + " = " + id;
@@ -245,15 +319,12 @@ public class DBManager extends SQLiteOpenHelper {
 				/** update此处仅 " ? = ? " */
 				String updateString = RecordsTable.identifier + " = " + id;
 				db.update(RecordsTable.tableName, values, updateString, null);
-				db.close();
 				return "writeData--update";
 			} else if (c.getCount() == 0) {
 				ContentValues cv = e.toContentValues();
 				db.insert(RecordsTable.tableName, null, cv);
-				db.close();
 				return "writeData--insert";
 			} else {
-				db.close();
 				return "writeData--cursor.getCount: " + c.getCount();
 			}
 		} else {

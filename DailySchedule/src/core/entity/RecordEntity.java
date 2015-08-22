@@ -9,6 +9,10 @@ public class RecordEntity implements ToContentValues {
 
 	private String index;
 	private String id;
+	/**
+	 * 时间 + index, 如 2015088801
+	 */
+	private String identifer;
 
 	/** 事件信息 */
 	public String thingId;
@@ -24,6 +28,12 @@ public class RecordEntity implements ToContentValues {
 	public String remark;
 	public String evaluation;
 
+	public RecordEntity() {
+	}
+	
+	public RecordEntity(String dateId,int index){
+		this.identifer = dateId + String.format("%02d", index);
+	}
 	public void setDate(String y, String m, String d) {
 		this.setYear(y);
 		this.setMonthOfYear(m);
@@ -129,6 +139,14 @@ public class RecordEntity implements ToContentValues {
 
 	public void setEvaluation(String evaluation) {
 		this.evaluation = evaluation;
+	}
+
+	public String getIdentifer() {
+		return identifer;
+	}
+
+	public void setIdentifer(String identifer) {
+		this.identifer = identifer;
 	}
 
 }

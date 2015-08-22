@@ -1,16 +1,12 @@
 package ui.view;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import ui.adapter.ColorGridAdapter;
 import ui.adapter.ColorGridAdapter.colorGridItemOnClickListener;
-import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
