@@ -5,6 +5,7 @@ import utils.ViewHolder;
 import com.dailyschedule.R;
 import core.entity.DailyEntity;
 import core.entity.RecordEntity;
+import android.R.raw;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -124,19 +125,26 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 				}
 			});
 
-			// subAdapter.clear();
-			// subAdapter.setList(entity.getThingList());
-			// LinearLayout subListLayout = ViewHolder.get(convertView,
-			// R.id.thing_list_layout);
-			// subListLayout.removeAllViews();
-			// for (int i = 0; i < subAdapter.getCount(); i++) {
-			// /** sublist item */
-			// View view = subAdapter.getView(i, convertView, parent);
-			// subListLayout.addView(view);
-			// view.setOnClickListener(this);
-			// String Tag = entity.getTimeStamp() + "," + position;
-			// view.setTag(Tag);
-			// }
+			/** evaluation img */
+			ImageView img = (ImageView) convertView.findViewById(R.id.evaluation_img);
+			switch (Integer.valueOf(entity.getEvaluation())) {
+			
+			case 1:
+				img.setImageResource(R.drawable.star_1);
+				break;
+			case 2:
+				img.setImageResource(R.drawable.star_2);
+				break;
+			case 3:
+				img.setImageResource(R.drawable.star_3);
+				break;
+			case 4:
+				img.setImageResource(R.drawable.star_4);
+				break;
+
+			default:
+				break;
+			}
 
 		} else {
 			/** 未展开的 */
@@ -185,6 +193,28 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 				ImageView arrow = ViewHolder.get(convertView, R.id.add_record_btn);
 				arrow.setVisibility(View.INVISIBLE);
 			}
+			
+			/** evaluation img */
+			ImageView img = (ImageView) convertView.findViewById(R.id.eva_img);
+			switch (Integer.valueOf(entity.getEvaluation())) {
+			
+			case 1:
+				img.setImageResource(R.drawable.star_1);
+				break;
+			case 2:
+				img.setImageResource(R.drawable.star_2);
+				break;
+			case 3:
+				img.setImageResource(R.drawable.star_3);
+				break;
+			case 4:
+				img.setImageResource(R.drawable.star_4);
+				break;
+
+			default:
+				break;
+			}
+			
 		}
 
 		return convertView;
