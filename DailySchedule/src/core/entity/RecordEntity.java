@@ -21,8 +21,8 @@ public class RecordEntity implements ToContentValues {
 	/** 时间信息 */
 	public String year;
 	public String monthOfYear;
-	public String dayOfWeek;
 	public String dayOfMonth;
+	public String dayOfWeek;
 
 	/** 评价 */
 	public String remark;
@@ -30,10 +30,23 @@ public class RecordEntity implements ToContentValues {
 
 	public RecordEntity() {
 	}
+
+	public void setDate(String dayIdentifer) {
+		this.year = dayIdentifer.substring(0, 4);
+		this.monthOfYear = dayIdentifer.substring(4, 6);
+		this.dayOfMonth = dayIdentifer.substring(6, 8);
+	}
 	
-	public RecordEntity(String dateId,int index){
+	public RecordEntity (String identifer){
+		this.setDate(identifer.substring(0, 8));
+		this.setIndex(identifer.substring(8, 10));
+		this.identifer = identifer;
+	}
+
+	public RecordEntity(String dateId, int index) {
 		this.identifer = dateId + String.format("%02d", index);
 	}
+
 	public void setDate(String y, String m, String d) {
 		this.setYear(y);
 		this.setMonthOfYear(m);
@@ -46,18 +59,18 @@ public class RecordEntity implements ToContentValues {
 
 		cv.put(RecordsTable.identifier, id);
 		cv.put(RecordsTable.index, index);
-		
+
 		cv.put(RecordsTable.year, year);
 		cv.put(RecordsTable.monthOfYear, monthOfYear);
 		cv.put(RecordsTable.dayOfMonth, dayOfMonth);
 		cv.put(RecordsTable.dayOfWeek, dayOfWeek);
-		
+
 		cv.put(RecordsTable.thingId, thingId);
 		cv.put(RecordsTable.thingName, thingName);
-		
+
 		cv.put(RecordsTable.remark, remark);
 		cv.put(RecordsTable.evaluation, evaluation);
-		
+
 		return cv;
 	}
 
@@ -81,7 +94,12 @@ public class RecordEntity implements ToContentValues {
 		return index;
 	}
 
-	public void setIndex(String index) {
+	public void setIndex(int index) {
+		// this.index = index;
+		this.index = String.format("%02d", index);
+	}
+	
+	public void setIndex(String index){
 		this.index = index;
 	}
 
@@ -91,6 +109,10 @@ public class RecordEntity implements ToContentValues {
 
 	public void setId(String identifier) {
 		this.id = identifier;
+	}
+
+	public void setIdentifer() {
+		this.identifer = year + monthOfYear + dayOfMonth + index;
 	}
 
 	public String getYear() {

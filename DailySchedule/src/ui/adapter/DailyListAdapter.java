@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import utils.ViewHolder;
 import com.dailyschedule.R;
 import core.entity.DailyEntity;
+import core.entity.RecordEntity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,11 +25,15 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 	private ArrayList<DailyEntity> dailyEntityList;
 	private Context context;
 	private static String TAG = "DailyListAdapter";
-	private onSubItemClickListener itemListener;
+	private onDailyItemClickListener itemListener;
 
 	public DailyListAdapter(Context context) {
 		this.context = context;
 		subAdapter = new RecordItemForExpandedAdapter(context);
+	}
+
+	public void setOnDailyItemClickListener(onDailyItemClickListener l) {
+		this.itemListener = l;
 	}
 
 	@Override
@@ -65,20 +71,26 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 		if (entity.isExpanded()) {
 			Log.d("getView", " 展 开 ");
 			/** 展开的list item */
-//			if (convertView == null) {
-				convertView = LayoutInflater.from(context).inflate(R.layout.day_list_item_large, null);
-//			}
+			convertView = LayoutInflater.from(context).inflate(R.layout.day_list_item_large, null);
+
 			/** list */
 			ListView lv = (ListView) convertView.findViewById(R.id.thing_list_view);
+			/** 此处listview 要设置高度，否则listview只显示第一行 嵌套list的缘故 */
+			/** http://blog.csdn.net/hcf_force/article/details/25316837 */
 			if (lv.getChildCount() == 0) {
+				ArrayList<RecordEntity> l = entity.getRecordsList();
 				subAdapter = new RecordItemForExpandedAdapter(context);
-				subAdapter.setList(entity.getRecordsList());
+				subAdapter.setList(l);
+				int height = (int) context.getApplicationContext().getResources().getDimension(R.dimen.line_hight_m);
+				lv.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height * l.size()));
+				// Log.d("rec nu", "size : " + l.size());
 				lv.setAdapter(subAdapter);
 			}
-			/** wraper*/
+
+			/** wraper */
 			LinearLayout wraper = (LinearLayout) convertView.findViewById(R.id.wraper);
 			wraper.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					String id = (String) v.getTag();
@@ -90,29 +102,41 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 				}
 			});
 			wraper.setTag(entity.getId());
-			
+
 			/** 时间信息 */
 			TextView dayOfMonthTv = (TextView) convertView.findViewById(R.id.day_of_mongth_tv_l);
 			dayOfMonthTv.setText(entity.getDayOfMonth());
 			TextView dateTv = (TextView) convertView.findViewById(R.id.date_tv);
 			String[] week = context.getResources().getStringArray(R.array.week);
-			String dateString = entity.getYear() + "年 " + entity.getMonthOfYear() + "月 " 
-					+ week[Integer.valueOf(entity.getDayOfWeek())];
+			String dateString = entity.getYear() + "年 " + entity.getMonthOfYear() + "月 " + week[Integer.valueOf(entity.getDayOfWeek()) - 1];
 			dateTv.setText(dateString);
-			
-			
-//			subAdapter.clear();
-//			subAdapter.setList(entity.getThingList());
-//			LinearLayout subListLayout = ViewHolder.get(convertView, R.id.thing_list_layout);
-//			subListLayout.removeAllViews();
-//			for (int i = 0; i < subAdapter.getCount(); i++) {
-//				/** sublist item */
-//				View view = subAdapter.getView(i, convertView, parent);
-//				subListLayout.addView(view);
-//				view.setOnClickListener(this);
-//				String Tag = entity.getTimeStamp() + "," + position;
-//				view.setTag(Tag);
-//			}
+
+			/** 添加record button */
+			ImageView addBtn = (ImageView) convertView.findViewById(R.id.add_record_btn);
+			addBtn.setTag(position);
+			addBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Log.d("addBtn", "clicked");
+					int pos = (Integer) v.getTag();
+					itemListener.onAddRecordBtnClick(pos);
+				}
+			});
+
+			// subAdapter.clear();
+			// subAdapter.setList(entity.getThingList());
+			// LinearLayout subListLayout = ViewHolder.get(convertView,
+			// R.id.thing_list_layout);
+			// subListLayout.removeAllViews();
+			// for (int i = 0; i < subAdapter.getCount(); i++) {
+			// /** sublist item */
+			// View view = subAdapter.getView(i, convertView, parent);
+			// subListLayout.addView(view);
+			// view.setOnClickListener(this);
+			// String Tag = entity.getTimeStamp() + "," + position;
+			// view.setTag(Tag);
+			// }
 
 		} else {
 			/** 未展开的 */
@@ -158,7 +182,7 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 
 			/** arrow */
 			if (contentLayout.getChildCount() == 0) {
-				TextView arrow = ViewHolder.get(convertView, R.id.arrow_down);
+				ImageView arrow = ViewHolder.get(convertView, R.id.add_record_btn);
 				arrow.setVisibility(View.INVISIBLE);
 			}
 		}
@@ -171,16 +195,22 @@ public class DailyListAdapter extends BaseAdapter implements OnClickListener {
 		String Tag = (String) v.getTag();
 		String[] tag = Tag.split(",");
 		if (tag.length > 0) {
-			itemListener.onSubItemClick(tag[0], Integer.valueOf(tag[1]));
+			itemListener.onRecordtemClick(tag[0], Integer.valueOf(tag[1]));
 		}
 	}
 
-	public interface onSubItemClickListener {
+	public interface onDailyItemClickListener {
 
 		/**
 		 * @Functiuon 每天事件展开列表的点击事件
 		 * @Author Heguanyuan 2015-8-4 下午3:44:22
 		 */
-		public void onSubItemClick(String timeStamp, int index);
+		public void onRecordtemClick(String timeStamp, int index);
+
+		/**
+		 * @Functiuon 添加记录
+		 * @Author Heguanyuan 2015-8-23 下午3:42:43
+		 */
+		public void onAddRecordBtnClick(int pos);
 	}
 }

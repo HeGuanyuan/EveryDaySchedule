@@ -14,7 +14,7 @@ public class DailyEntity implements ToContentValues {
 
 	private String id = "";
 	private String identifer = "";
-	private ArrayList<ThingEntity> recordsList;
+	private ArrayList<RecordEntity> recordsList;
 	private boolean isExpanded = false;
 
 	private String wordsToday = "";
@@ -52,7 +52,7 @@ public class DailyEntity implements ToContentValues {
 	public String getThingIdsString() {
 		if (recordsList != null) {
 			String s = "";
-			for (ThingEntity e : recordsList) {
+			for (RecordEntity e : recordsList) {
 				s += e.getId();
 				s += ",";
 			}
@@ -76,16 +76,23 @@ public class DailyEntity implements ToContentValues {
 		this.year = String.valueOf(y);
 		this.month = String.format("%tm", d);
 		this.dayOfMonth = String.format("%td", d);
-		this.dayOfWeek = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
+		
+		int weekday = c.get(Calendar.DAY_OF_WEEK);
+		if (weekday - 1 > 0) {
+			weekday = weekday - 1;
+		} else {
+			weekday = 7;
+		}
+		this.dayOfWeek = String.valueOf(weekday);
 
 		this.setIdentifer(this.year + this.month + this.dayOfMonth);
 	}
-	
-	public DailyEntity(String identifer){
+
+	public DailyEntity(String identifer) {
 		this.identifer = identifer;
-		this.year = identifer.substring(0, 3);
-		this.month = identifer.substring(4, 5);
-		this.dayOfMonth = identifer.substring(6, 7);
+		this.year = identifer.substring(0, 4);
+		this.month = identifer.substring(4, 6);
+		this.dayOfMonth = identifer.substring(6, 8);
 	}
 
 	public void setDate(String y, String m, String d) {
@@ -142,13 +149,13 @@ public class DailyEntity implements ToContentValues {
 		this.dayOfMonth = dayOfMonth;
 	}
 
-	public ArrayList<ThingEntity> getRecordsList() {
+	public ArrayList<RecordEntity> getRecordsList() {
 		if (recordsList == null)
-			recordsList = new ArrayList<ThingEntity>();
+			recordsList = new ArrayList<RecordEntity>();
 		return recordsList;
 	}
 
-	public void setRecordsList(ArrayList<ThingEntity> thingList) {
+	public void setRecordsList(ArrayList<RecordEntity> thingList) {
 		this.recordsList = thingList;
 	}
 

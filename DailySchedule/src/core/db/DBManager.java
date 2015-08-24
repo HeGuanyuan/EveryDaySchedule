@@ -120,7 +120,7 @@ public class DBManager extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * @Functiuon 获取daily列表
+	 * @Functiuon 获取daily列表 无误
 	 * @Author Heguanyuan 2015-8-22 下午8:01:10
 	 */
 	public ArrayList<DailyEntity> getDailyArray() {
@@ -131,16 +131,28 @@ public class DBManager extends SQLiteOpenHelper {
 		String sql = "SELECT * FROM " + DailyTable.tableName + " ORDER BY " + DailyTable.identifier;
 		Cursor c = db.rawQuery(sql, null);
 		while (c.moveToNext()) {
+			String id = c.getString(c.getColumnIndex("id"));
 			String identifier = c.getString(c.getColumnIndex(DailyTable.identifier));
-
 			String dayOfWeek = c.getString(c.getColumnIndex(DailyTable.dayOfWeek));
 
-			String thingIds = c.getString(c.getColumnIndex(DailyTable.thingIds));
+			// String thingIds =
+			// c.getString(c.getColumnIndex(DailyTable.thingIds));
 			String wordsToday = c.getString(c.getColumnIndex(DailyTable.wordsToday));
 			String evaluation = c.getString(c.getColumnIndex(DailyTable.evaluation));
 
 			DailyEntity e = new DailyEntity(identifier);
+			e.setId(id);
 			e.setDayOfWeek(dayOfWeek);
+
+			e.setExpanded(false);
+
+			/** setRecordsList */
+			e.setRecordsList(getRecordsOfDaily(e.getIdentifer()));
+
+			e.setWordsToday(wordsToday);
+			e.setEvaluation(evaluation);
+
+			list.add(e);
 		}
 		return list;
 	}
@@ -179,15 +191,52 @@ public class DBManager extends SQLiteOpenHelper {
 	}
 
 	/**
-	 *@Functiuon 获取记录 实体
-	 *@Author Heguanyuan 2015-8-22 下午8:17:07
+	 * @Functiuon 根据dayIdentifer获取records
+	 * @Author Heguanyuan 2015-8-24 下午7:59:26
+	 */
+	public ArrayList<RecordEntity> getRecordsOfDaily(String dayIdentifer) {
+		ArrayList<RecordEntity> list = new ArrayList<RecordEntity>();
+		if (db == null)
+			db = this.getWritableDatabase();
+		String sql = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.identifier + " LIKE ?";
+		String[] params = new String[] { dayIdentifer + "__" };
+		Cursor c = db.rawQuery(sql, params);
+		while (c.moveToNext()) {
+			// String index = c.getString(c.getColumnIndex(RecordsTable.index));
+			String id = c.getString(c.getColumnIndex("id"));
+			String identifer = c.getString(c.getColumnIndex(RecordsTable.identifier));
+
+			String thingId = c.getString(c.getColumnIndex(RecordsTable.thingId));
+			String thingName = c.getString(c.getColumnIndex(RecordsTable.thingName));
+
+			/** 时间信息用 identifer 处理 */
+			String dayOfWeek = c.getString(c.getColumnIndex(RecordsTable.dayOfWeek));
+
+			String remark = c.getString(c.getColumnIndex(RecordsTable.remark));
+			String evaluation = c.getString(c.getColumnIndex(RecordsTable.evaluation));
+
+			RecordEntity e = new RecordEntity(identifer);
+			e.setId(id);
+			e.setThingId(thingId);
+			e.setThingName(thingName);
+			e.setDayOfWeek(dayOfWeek);
+			e.setRemark(remark);
+			e.setEvaluation(evaluation);
+			list.add(e);
+		}
+		return list;
+	}
+
+	/**
+	 * @Functiuon 获取记录 实体
+	 * @Author Heguanyuan 2015-8-22 下午8:17:07
 	 */
 	public RecordEntity getRecordEntity(String identifer) {
 		RecordEntity e = new RecordEntity();
 		String sql = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.identifier + " = ?";
-		Cursor c = db.rawQuery(sql, new String[]{identifer});
-		if(c.getCount() == 1){
-			while(c.moveToNext()){
+		Cursor c = db.rawQuery(sql, new String[] { identifer });
+		if (c.getCount() == 1) {
+			while (c.moveToNext()) {
 				String name;
 			}
 		}

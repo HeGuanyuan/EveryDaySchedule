@@ -6,6 +6,7 @@ import utils.ViewHolder;
 
 import com.dailyschedule.R;
 
+import core.entity.RecordEntity;
 import core.entity.ThingEntity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,11 +17,11 @@ import android.widget.TextView;
 
 public class RecordItemAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<ThingEntity> thingList;
+	private ArrayList<RecordEntity> thingList;
 
 	public RecordItemAdapter(Context context) {
 		this.context = context;
-		thingList = new ArrayList<ThingEntity>();
+		thingList = new ArrayList<RecordEntity>();
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class RecordItemAdapter extends BaseAdapter {
 			return null;
 	}
 
-	public void setList(ArrayList<ThingEntity> list) {
+	public void setList(ArrayList<RecordEntity> list) {
 		this.thingList = list;
 	}
 
@@ -58,14 +59,14 @@ public class RecordItemAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ThingEntity entity = thingList.get(position);
+		RecordEntity entity = thingList.get(position);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(R.layout.thing_item_small, null);
 		}
 
 		/** name */
 		TextView nameTv = ViewHolder.get(convertView, R.id.thing_item);
-		nameTv.setText(entity.getName());
+		nameTv.setText(entity.getThingName());
 		// nameTv.setBackground(background)
 		return convertView;
 	}

@@ -35,6 +35,12 @@ public class AddRecordGridAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	public ThingEntity getThingEntity (int position){
+		if(thingList != null && position < thingList.size()){
+			return thingList.get(position);
+		}
+		return null;
+	}
 	@Override
 	public Object getItem(int position) {
 		return null;
@@ -49,7 +55,7 @@ public class AddRecordGridAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ThingEntity entity = thingList.get(position);
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.thing_item_small, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.record_item, null);
 		}
 
 		TextView itemTv = ViewHolder.get(convertView, R.id.thing_item);
