@@ -57,7 +57,7 @@ public class RecordEntity implements ToContentValues {
 	public ContentValues toContentValues() {
 		ContentValues cv = new ContentValues();
 
-		cv.put(RecordsTable.identifier, id);
+		cv.put(RecordsTable.identifier, identifer);
 		cv.put(RecordsTable.index, index);
 
 		cv.put(RecordsTable.year, year);

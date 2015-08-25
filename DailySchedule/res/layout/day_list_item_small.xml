@@ -55,7 +55,7 @@
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
+                android:src="@drawable/ic_launcher_a"
                 android:textAlignment="viewEnd" />
 
 

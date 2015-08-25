@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.dailyschedule.GlobalConstants;
 import com.dailyschedule.GlobalConstants.ColorTable;
@@ -170,11 +171,16 @@ public class DBManager extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(sql, null);
 		while (c.moveToNext()) {
 			ThingEntity e = new ThingEntity();
+			e.setId(c.getString(c.getColumnIndex("id")));
 			e.setName(c.getString(c.getColumnIndex(ThingEntityTable.thingName)));
 			e.setColor(c.getString(c.getColumnIndex(ThingEntityTable.thingColor)));
+
 			e.setCreatTime(c.getString(c.getColumnIndex(ThingEntityTable.createTime)));
 			e.setEndTime(c.getString(c.getColumnIndex(ThingEntityTable.endTime)));
 
+			/** remark 和 evalutions */
+
+			/** 周期 */
 			if (c.getString(c.getColumnIndex(ThingEntityTable.isCyclical)).equals("1")) {
 				e.setCyclical(true);
 				String remindDay = c.getString(c.getColumnIndex(ThingEntityTable.remindDayOfWeek));
@@ -198,7 +204,7 @@ public class DBManager extends SQLiteOpenHelper {
 		ArrayList<RecordEntity> list = new ArrayList<RecordEntity>();
 		if (db == null)
 			db = this.getWritableDatabase();
-		String sql = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.identifier + " LIKE ?";
+		String sql = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.identifier + " LIKE ? ORDER BY " + RecordsTable.identifier;
 		String[] params = new String[] { dayIdentifer + "__" };
 		Cursor c = db.rawQuery(sql, params);
 		while (c.moveToNext()) {
@@ -358,27 +364,30 @@ public class DBManager extends SQLiteOpenHelper {
 			db = this.getWritableDatabase();
 		}
 		if (e != null) {
-			String id = e.getId();
-			String s = "SELECT * FROM " + RecordsTable.tableName + " WHERE " + RecordsTable.thingId + " = " + id;
 
-			Cursor c = db.rawQuery(s, null);
+			String identifer = e.getIdentifer();
+			String sql1 = "SELECT * FROM " + RecordsTable.tableName;
+			String sql2 = " WHERE " + RecordsTable.identifier + " LIKE ? AND " + RecordsTable.thingId + " = ?";
+			String[] params = new String[] { e.getIdentifer().substring(0, 8) + "__", e.getThingId() };
+			Log.d("sql", sql1 + sql2 + "/" + params[0] + "," + params[1]);
+
+			Cursor c = db.rawQuery(sql1 + sql2, params);
 			if (c.getCount() == 1) {
 				ContentValues values = e.toContentValues();
 				// values.put(key, value)
 				/** update此处仅 " ? = ? " */
-				String updateString = RecordsTable.identifier + " = " + id;
-				db.update(RecordsTable.tableName, values, updateString, null);
-				return "writeData--update";
+				String updateString = RecordsTable.identifier + " = ?";
+				db.update(RecordsTable.tableName, values, updateString, new String[] { identifer });
+				return "writeRecord--update";
 			} else if (c.getCount() == 0) {
 				ContentValues cv = e.toContentValues();
 				db.insert(RecordsTable.tableName, null, cv);
-				return "writeData--insert";
+				return "writeRecord--insert";
 			} else {
-				return "writeData--cursor.getCount: " + c.getCount();
+				return "writeRecord--cursor.getCount: " + c.getCount();
 			}
 		} else {
-			return "writeData--entity is null";
+			return "writeRecord--entity is null";
 		}
 	}
-
 }

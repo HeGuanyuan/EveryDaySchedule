@@ -66,12 +66,12 @@ public class MyDailyFragment extends BaseFragment implements onDailyItemClickLis
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		initView();
-		
+
 		loadData();
 		DBManager m = new DBManager(getActivity());
-		
+
 		setListener();
 	}
 
@@ -135,36 +135,19 @@ public class MyDailyFragment extends BaseFragment implements onDailyItemClickLis
 	}
 
 	private void loadData() {
+		/** 获取显示记录的设置 */
 		String s = getCurrentRecordsSet();
-		// Calendar c = Calendar.getInstance();
-		// String monthOfYear = toString(c.get(Calendar.MONTH));
-		// String year = toString(c.get(Calendar.YEAR));
+
 		if (dbManager == null) {
 			dbManager = new DBManager(getActivity());
 		}
+
 		dailyList = dbManager.getDailyArray();
 		adapter = new DailyListAdapter(getActivity());
 		adapter.setOnDailyItemClickListener(this);
 		adapter.setList(dailyList);
 		dailyListView.setAdapter(adapter);
 
-		// if (dailyList == null){
-		// dailyList = new ArrayList<DailyEntity>();
-		// Calendar c = Calendar.getInstance();
-		// for (int i = 0; i < 31; i++) {
-		// c.set(2015, 7, i);
-		// String week = toString(c.get(Calendar.DAY_OF_WEEK) - 1);
-		// // Log.d("cal", "week: " + week + "," + i + 1);
-		// DailyEntity e = new DailyEntity();
-		// e.setDate("2015", "08", (i + 1) + "");
-		// e.setDayOfWeek(week);
-		// ThingEntity tE = new ThingEntity();
-		// tE.setName("sketch" + (i + 1));
-		// ArrayList<ThingEntity> tl = new ArrayList<ThingEntity>();
-		// tl.add(tE);
-		// e.setRecordsList(tl);
-		// dailyList.add(e);
-		// }
 	}
 
 	/**
@@ -180,7 +163,7 @@ public class MyDailyFragment extends BaseFragment implements onDailyItemClickLis
 		popWindow = new PopupWindow(convertView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
 		// popWindow.setOnDismissListener(onDismissListener)
 		popWindow.setTouchable(true);
-		Drawable d = getActivity().getResources().getDrawable(R.drawable.ic_launcher);
+		Drawable d = getActivity().getResources().getDrawable(R.drawable.ic_launcher_a);
 		// 这个并没有显示backgroundrawble
 		popWindow.setBackgroundDrawable(d);
 		/** 偏移向左上是 + */
@@ -208,52 +191,64 @@ public class MyDailyFragment extends BaseFragment implements onDailyItemClickLis
 	 * @Functiuon 添加一条记录
 	 * @Author Heguanyuan 2015-8-22 下午3:51:12
 	 */
-	// private String addRecord(int pos) {
-	//
-	// AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	// /** view */
-	// View v =
-	// LayoutInflater.from(getActivity()).inflate(R.layout.add_record_layout,
-	// null);
-	// builder.setView(v);
-	//
-	// GridView gv = (GridView) v.findViewById(R.id.add_record_grid);
-	// addRecordAdapter = new AddRecordGridAdapter(getActivity());
-	// gv.setAdapter(addRecordAdapter);
-	// /** item点击事件 */
-	// gv.setOnItemClickListener(new OnItemClickListener() {
-	// @Override
-	// public void onItemClick(AdapterView<?> parent, View view, int position,
-	// long id) {
-	// RecordEntity e = addRecordAdapter.getThingEntity(position);
-	// RecordEntity recordEntity = new RecordEntity();
-	// DailyEntity dailyEntity = dailyList.get(dailyPosition);
-	// recordEntity.setThingName(e.getName());
-	// recordEntity.setThingId(e.getId());
-	// recordEntity.setIndex(dailyEntity.getRecordsList().size());
-	//
-	// recordEntity.setDayOfWeek(dailyEntity.getDayOfWeek());
-	// recordEntity.setDate(dailyEntity.getIdentifer());
-	// recordEntity.setIdentifer();
-	// Log.d("addRecord", recordEntity.getIdentifer().toString());
-	//
-	// dailyList.get(dailyPosition).getRecordsList().add(e);
-	// adapter.notifyDataSetChanged();
-	// if (addRecordDialog != null) {
-	// addRecordDialog.dismiss();
-	// }
-	//
-	// // dbManager.writeData(e);
-	// showToast(getActivity(), "已添加");
-	// }
-	// });
-	//
-	// builder.setTitle("选择事件");
-	// addRecordDialog = builder.create();
-	//
-	// addRecordDialog.show();
-	// return "";
-	// }
+	private String addRecord(int pos) {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		/** view */
+		View v = LayoutInflater.from(getActivity()).inflate(R.layout.add_record_layout, null);
+		builder.setView(v);
+
+		GridView gv = (GridView) v.findViewById(R.id.add_record_grid);
+		addRecordAdapter = new AddRecordGridAdapter(getActivity());
+		gv.setAdapter(addRecordAdapter);
+		/** item点击事件 */
+		gv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+				ThingEntity thingEntity = addRecordAdapter.getThingEntity(position);
+
+				RecordEntity recordEntity = new RecordEntity();
+				DailyEntity dailyEntity = dailyList.get(dailyPosition);
+
+				recordEntity.setThingName(thingEntity.getName());
+				recordEntity.setThingId(thingEntity.getId());
+
+				recordEntity.setDayOfWeek(dailyEntity.getDayOfWeek());
+
+				recordEntity.setDate(dailyEntity.getIdentifer());
+				recordEntity.setIndex(dailyEntity.getRecordsList().size() + 1);
+				recordEntity.setIdentifer();
+
+				Log.d("addRecord", recordEntity.getIdentifer().toString());
+
+//				dailyList.get(dailyPosition).getRecordsList().add(recordEntity);
+//				adapter.notifyDataSetChanged();
+
+				if (addRecordDialog != null) {
+					addRecordDialog.dismiss();
+				}
+
+				String info = dbManager.writeData(recordEntity);
+				Log.d("addrecord", info);
+				
+				/** 刷新UI */
+				dailyList = dbManager.getDailyArray();
+				adapter.setList(dailyList);
+				adapter.notifyDataSetChanged();
+				int count = dailyList.get(0).getRecordsList().size();
+				Log.d("0.count", "count: " + count);
+
+				showToast(getActivity(), "已添加");
+			}
+		});
+
+		builder.setTitle("选择事件");
+		addRecordDialog = builder.create();
+
+		addRecordDialog.show();
+		return "";
+	}
 
 	/**
 	 * @Functiuon 添加一天
@@ -293,8 +288,8 @@ public class MyDailyFragment extends BaseFragment implements onDailyItemClickLis
 	@Override
 	public void onAddRecordBtnClick(int pos) {
 		Log.d("onAddRecordBtnClick", "添加record");
-		// addRecord(pos);
 		dailyPosition = pos;
+		addRecord(pos);
 	}
 
 	/** record 点击事件 */
